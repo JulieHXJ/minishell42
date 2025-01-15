@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+         #
+#    By: amesmar <amesmar@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/14 16:42:34 by xhuang            #+#    #+#              #
-#    Updated: 2025/01/14 17:04:43 by xhuang           ###   ########.fr        #
+#    Updated: 2025/01/15 17:05:24 by amesmar          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ INC = -I ./inc/
 
 SRCS_DIR = ./srcs/
 
-SRCS = $(wildcard $(SRCS_DIR)*.c)
+SRCS = $(shell find $(SRCS_DIR) -type f -name "*.c")
 
 
 OBJS = $(SRCS:.c=.o)
@@ -37,7 +37,7 @@ libft:
 	@make -C $(LIBFT)
 
 $(NAME):	$(OBJS) 
-	$(CC) $(CFLAGS) $(OBJS) $(LIB) $(INC) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) $(LIB) $(INC) -o $(NAME) -l readline
 	@echo "Executable $(NAME) has been created."
 
 %.o:	%.c
