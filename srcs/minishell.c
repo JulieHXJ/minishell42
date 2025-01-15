@@ -6,7 +6,7 @@
 /*   By: amesmar <amesmar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 16:53:00 by xhuang            #+#    #+#             */
-/*   Updated: 2025/01/15 17:07:19 by amesmar          ###   ########.fr       */
+/*   Updated: 2025/01/15 19:28:59 by amesmar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,21 @@ void	terminate_shell(t_shell *data, int exit_code)
 	exit(exit_code);
 }
 
+void	run_minishell(t_shell *data)
+{
+	while (1)
+	{
+		set_signals();
+		data->input = readline(PROMPT);
+		if (parse_input(data) == true)
+		{}
+			//global_exit_code = execute(data);/////////////to do
+		else
+			global_exit_code = 1;
+		free_shell(data, false);
+	}
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell	minishell;
@@ -50,7 +65,7 @@ int	main(int argc, char **argv, char **envp)
 	ft_memset(&minishell, 0, sizeof(t_shell));
 	if (check_input(argc) || init_shell(&minishell, envp))
 	{
-		//run_minishell(&minishell);
+		run_minishell(&minishell);
 		terminate_shell(&minishell, global_exit_code);	
 	}
 	else
