@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_pipe.c                                       :+:      :+:    :+:   */
+/*   check_token.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amesmar <amesmar@student.42.fr>            +#+  +:+       +#+        */
+/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 19:24:44 by amesmar           #+#    #+#             */
-/*   Updated: 2025/01/15 19:35:48 by amesmar          ###   ########.fr       */
+/*   Updated: 2025/01/17 15:51:42 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static bool	consecutive_ops(t_token *token_node)
+static bool	sequence_check(t_token *token_node)
 {
 	if (token_node->prev)
 	{
@@ -26,21 +26,21 @@ static bool	consecutive_ops(t_token *token_node)
 	return (false);
 }
 
-int	check_consecutives(t_token **token_lst)
+int	check_token_list(t_token **token_lst)
 {
 	t_token	*temp;
 
 	temp = *token_lst;
 	while (temp)
 	{
-		if (consecutive_ops(temp) == true)
+		if (sequence_check(temp) == true)
 		{
 			if (temp->type == END && temp->prev && temp->prev->type > PIPE)
-				ft_printf("syntax error near unexpected token");//////changed
+				ft_printf("syntax error: newline\n");
 			else if (temp->type == END && temp->prev)
-				ft_printf("syntax error near unexpected token");//////changed
+				ft_printf("syntax error: %s\n", temp->prev->input);
 			else
-				ft_printf("syntax error near unexpected token");//////changed
+				ft_printf("syntax error: %s\n", temp->input);
 			return (1);
 		}
 		temp = temp->next;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amesmar <amesmar@student.42.fr>            +#+  +:+       +#+        */
+/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 18:50:52 by amesmar           #+#    #+#             */
-/*   Updated: 2025/01/15 19:28:22 by amesmar          ###   ########.fr       */
+/*   Updated: 2025/01/17 15:33:31 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static bool	check_out_of_range(int neg, unsigned long long num, bool *error)
 {
-	if ((neg == 1 && num > LONG_MAX)
-		|| (neg == -1 && num > -(unsigned long)LONG_MIN))
+	if ((neg == 1 && num > LONG_MAX) || (neg == -1 && num >
+			-(unsigned long)LONG_MIN))
 		*error = true;
 	return (*error);
 }
@@ -101,17 +101,15 @@ int	exit_builtin(t_shell *data, char **args)
 	{
 		exit_code = get_exit_code(args[1], &error);
 		if (error)
-        {
-            ft_printf("Argument is not numeric");
-            exit_code = 2;
-        }
+		{
+			ft_printf("Argument is not numeric");
+			exit_code = 2;
+		}
 		else if (args[2])
 		{
-            ft_printf("Too many arguments");
-            exit_code = 1;
-            return (exit_code);
-        }
+			ft_printf("Too many arguments");
+			return (exit_code = 1, exit_code);
+		}
 	}
-	terminate_shell(data, exit_code);
-	return (2);
+	return (terminate_shell(data, exit_code), 2);
 }

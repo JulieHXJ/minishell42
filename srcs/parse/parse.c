@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amesmar <amesmar@student.42.fr>            +#+  +:+       +#+        */
+/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 18:33:19 by amesmar           #+#    #+#             */
-/*   Updated: 2025/01/15 19:27:51 by amesmar          ###   ########.fr       */
+/*   Updated: 2025/01/17 18:10:36 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,8 @@ bool	parse_input(t_shell *data)
 		return (false);
 	if (check_if_var(&data->token) == 1)
 		return (false);
-        ////////////////////////////////to do///////////////////////////
-	// var_expander(data, &data->token);
-	// handle_quotes(data);
+	var_expander(data, &data->token);
+	handle_quotes(data);
 	// create_commands(data, data->token);
 	return (true);
 }

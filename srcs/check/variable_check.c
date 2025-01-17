@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   variable_check.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amesmar <amesmar@student.42.fr>            +#+  +:+       +#+        */
+/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 19:12:29 by amesmar           #+#    #+#             */
-/*   Updated: 2025/01/15 19:35:59 by amesmar          ###   ########.fr       */
+/*   Updated: 2025/01/17 18:04:19 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,17 @@ int	check_if_var(t_token **token_lst)
 	while (temp)
 	{
 		variable_check(&temp);
-		if (check_consecutives(&temp) == 1)
+		if (check_token_list(&temp) == 1)
 			return (1);
 		temp = temp->next;
 	}
-	return (1);
+	return (0);
+}
+
+bool	var_valid(char c)
+{
+	if (ft_isalnum(c) == 0 && c != '_')
+		return (false);
+	else
+		return (true);
 }
