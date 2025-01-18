@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amesmar <amesmar@student.42.fr>            +#+  +:+       +#+        */
+/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:30:23 by amesmar           #+#    #+#             */
-/*   Updated: 2025/01/15 17:06:50 by amesmar          ###   ########.fr       */
+/*   Updated: 2025/01/18 18:01:17 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,26 +43,26 @@ void	free_array(char **arr)
 	}
 }
 
-void	free_shell(t_shell *data, bool clear_history)
+void	free_shell(t_shell *minishell, bool free_all)
 {
-	if (data && data->input)
+	if (minishell && minishell->input)
 	{
-		free_ptr(data->input);
-		data->input = NULL;
+		free_ptr(minishell->input);
+		minishell->input = NULL;
 	}
     ///////// to do ////////
-	// if (data && data->token)
-	// 	lstclear_token(&data->token, &free_ptr);
-	// if (data && data->command)
-	// 	lst_clear_cmd(&data->command, &free_ptr);
-	if (clear_history == true)
+	// if (minishell && minishell->token)
+	// 	lstclear_token(&minishell->token, &free_ptr);
+	// if (minishell && minishell->command)
+	// 	lst_clear_cmd(&minishell->command, &free_ptr);
+	if (free_all == true)
 	{
-		if (data && data->cur_dir)
-			free_ptr(data->cur_dir);
-		if (data && data->old_dir)
-			free_ptr(data->old_dir);
-		if (data && data->envp)
-			free_array(data->envp);
+		if (minishell && minishell->cur_dir)
+			free_ptr(minishell->cur_dir);
+		if (minishell && minishell->old_dir)
+			free_ptr(minishell->old_dir);
+		if (minishell && minishell->envp)
+			free_array(minishell->envp);
 		rl_clear_history();
 	}
 }
@@ -79,4 +79,22 @@ void	close_fds(t_cmd *cmds, bool close_backups)
 			re_pipe(cmds->pipe);
 	}
 	close_pipe_fds(cmds, NULL);
+}
+
+void	free_io(t_pipe *io)
+{
+	if (!io)
+		return ;
+	re_pipe(io);
+	if (io->heredoc_delimiter)
+	{
+		unlink(io->infile);
+		free_ptr(io->heredoc_delimiter);
+	}
+	if (io->infile)
+		free_ptr(io->infile);
+	if (io->outfile)
+		free_ptr(io->outfile);
+	if (io)
+		free_ptr(io);
 }

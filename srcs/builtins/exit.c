@@ -1,17 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins.c                                         :+:      :+:    :+:   */
+/*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 18:50:52 by amesmar           #+#    #+#             */
-/*   Updated: 2025/01/17 15:33:31 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/01/18 18:15:59 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+
+//unused
 static bool	check_out_of_range(int neg, unsigned long long num, bool *error)
 {
 	if ((neg == 1 && num > LONG_MAX) || (neg == -1 && num >

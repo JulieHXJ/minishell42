@@ -3,48 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amesmar <amesmar@student.42.fr>            +#+  +:+       +#+        */
+/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/15 16:48:53 by amesmar           #+#    #+#             */
-/*   Updated: 2025/01/15 16:53:01 by amesmar          ###   ########.fr       */
+/*   Created: 2025/01/18 18:39:34 by xhuang            #+#    #+#             */
+/*   Updated: 2025/01/18 19:15:50 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	close_pipe_fds(t_cmd *cmds, t_cmd *skip_cmd)
+bool	create_pipes(t_shell *data)
 {
-	while (cmds)
+	int			*fd;
+	t_cmd	*tmp;
+
+	tmp = data->command;
+	while (tmp)
 	{
-		if (cmds != skip_cmd && cmds->pipe_fd)
+		if (tmp->pipe_out || (tmp->prev && tmp->prev->pipe_out))
 		{
-			close(cmds->pipe_fd[0]);
-			close(cmds->pipe_fd[1]);
+			fd = malloc(sizeof * fd * 2);
+			if (!fd || pipe(fd) != 0)
+			{
+				free_shell(data, false);
+				return (false);
+			}
+			tmp->pipe_fd = fd;
 		}
-		cmds = cmds->next;
+		tmp = tmp->next;
 	}
-}
-
-bool	re_pipe(t_pipe *io)
-{
-	int	ret;
-
-	ret = true;
-	if (!io)
-		return (ret);
-	if (io->stdin_backup != -1)
-	{
-		if (dup2(io->stdin_backup, STDIN_FILENO) == -1)
-			ret = false;
-		close(io->stdin_backup);
-		io->stdin_backup = -1;
-	}
-	if (io->stdout_backup != -1)
-	{
-		if (dup2(io->stdout_backup, STDOUT_FILENO) == -1)
-			ret = false;
-		close(io->stdout_backup);
-		io->stdout_backup = -1;
-	}
-	return (ret);
+	return (true);
 }

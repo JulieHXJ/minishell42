@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   token_list.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amesmar <amesmar@student.42.fr>            +#+  +:+       +#+        */
+/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 19:05:03 by amesmar           #+#    #+#             */
-/*   Updated: 2025/01/15 19:06:04 by amesmar          ###   ########.fr       */
+/*   Updated: 2025/01/18 18:04:08 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_token	*lst_new_token(char *str, char *str_backup, int type, int status)
+t_token	*new_tkn(char *str, char *str_backup, int type, int status)
 {
 	t_token	*new_node;
 
@@ -30,7 +30,7 @@ t_token	*lst_new_token(char *str, char *str_backup, int type, int status)
 	return (new_node);
 }
 
-void	lst_add_back_token(t_token **alst, t_token *new_node)
+void	add_back_tkn(t_token **alst, t_token *new_node)
 {
 	t_token	*start;
 
@@ -49,7 +49,7 @@ void	lst_add_back_token(t_token **alst, t_token *new_node)
 	}
 }
 
-void	lstdelone_token(t_token *lst, void (*del)(void *))
+void	delone_tkn(t_token *lst, void (*del)(void *))
 {
 	if (del && lst && lst->input)
 	{
@@ -68,7 +68,7 @@ void	lstdelone_token(t_token *lst, void (*del)(void *))
 	free_ptr(lst);
 }
 
-void	lstclear_token(t_token **lst, void (*del)(void *))
+void	clear_tkn(t_token **lst, void (*del)(void *))
 {
 	t_token	*tmp;
 
@@ -76,7 +76,36 @@ void	lstclear_token(t_token **lst, void (*del)(void *))
 	while (*lst != NULL)
 	{
 		tmp = (*lst)->next;
-		lstdelone_token(*lst, del);
+		delone_tkn(*lst, del);
 		*lst = tmp;
 	}
+}
+
+t_token	*insert_tkn(t_token **head, t_token *to_del, t_token *insert)
+{
+	t_token	*temp;
+
+	temp = *head;
+	if (temp == NULL)
+		*head = insert;
+	else if (temp == to_del)
+	{
+		*head = insert;
+		insert->next = temp->next;
+		if (temp->next != NULL)
+			temp->next->prev = insert;
+	}
+	else
+	{
+		while (temp != to_del)
+			temp = temp->next;
+		insert->prev = temp->prev;
+		temp->prev->next = insert;
+		while (insert->next)
+			insert = insert->next;
+		temp->next->prev = insert;
+		insert->next = temp->next;
+	}
+	free_ptr(to_del->input);
+	return (free_ptr(to_del), insert);
 }

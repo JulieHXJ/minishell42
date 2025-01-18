@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 18:54:29 by xhuang            #+#    #+#             */
-/*   Updated: 2025/01/17 19:16:02 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/01/18 17:51:59 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	echo_cmd(t_shell *data, char **argv)
 	(void)data;
 	flag = false;
 	i = 1;
-	while (argv[i] && is_n_flag(argv[i]))
+	while (argv[i] && is_flag(argv[i]))
 	{
 		flag = true;
 		i++;

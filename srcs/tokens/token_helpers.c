@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   token_helpers.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amesmar <amesmar@student.42.fr>            +#+  +:+       +#+        */
+/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 19:04:02 by amesmar           #+#    #+#             */
-/*   Updated: 2025/01/15 19:06:20 by amesmar          ###   ########.fr       */
+/*   Updated: 2025/01/18 17:18:06 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	save_separator(t_token **token_lst, char *str, int index, int type)
+static int	save_sep(t_token **token_lst, char *str, int index, int type)
 {
 	int		i;
 	char	*sep;
@@ -26,7 +26,7 @@ int	save_separator(t_token **token_lst, char *str, int index, int type)
 		while (i < 2)
 			sep[i++] = str[index++];
 		sep[i] = '\0';
-		lst_add_back_token(token_lst, lst_new_token(sep, NULL, type, DEFAULT));
+		add_back_tkn(token_lst, new_tkn(sep, NULL, type, DEFAULT));
 	}
 	else
 	{
@@ -36,12 +36,12 @@ int	save_separator(t_token **token_lst, char *str, int index, int type)
 		while (i < 1)
 			sep[i++] = str[index++];
 		sep[i] = '\0';
-		lst_add_back_token(token_lst, lst_new_token(sep, NULL, type, DEFAULT));
+		add_back_tkn(token_lst, new_tkn(sep, NULL, type, DEFAULT));
 	}
 	return (0);
 }
 
-int	save_word(t_token **token_lst, char *str, int index, int start)
+static int	save_word(t_token **token_lst, char *str, int index, int start)
 {
 	int		i;
 	char	*word;
@@ -57,12 +57,11 @@ int	save_word(t_token **token_lst, char *str, int index, int start)
 		i++;
 	}
 	word[i] = '\0';
-	lst_add_back_token(token_lst, \
-			lst_new_token(word, ft_strdup(word), WORD, DEFAULT));
+	add_back_tkn(token_lst, new_tkn(word, ft_strdup(word), WORD, DEFAULT));
 	return (0);
 }
 
-int	is_separator(char *str, int i)
+static int	is_sep(char *str, int i)
 {
 	if (((str[i] > 8 && str[i] < 14) || str[i] == 32))
 		return (SPACES);
@@ -73,9 +72,9 @@ int	is_separator(char *str, int i)
 	else if (str[i] == '>' && str[i + 1] == '>')
 		return (APPEND);
 	else if (str[i] == '<')
-		return (INPUT);
+		return (REDIRECT_IN);
 	else if (str[i] == '>')
-		return (TRUNC);
+		return (REDIRECT_OUT);
 	else if (str[i] == '\0')
 		return (END);
 	else
@@ -95,19 +94,19 @@ int	set_status(int status, char *str, int i)
 	return (status);
 }
 
-int	save_word_or_sep(int *i, char *str, int start, t_shell *data)
+int	word_or_sep(int *i, char *str, int start, t_shell *data)
 {
 	int	type;
 
-	type = is_separator(str, (*i));
+	type = is_sep(str, (*i));
 	if (type)
 	{
-		if ((*i) != 0 && is_separator(str, (*i) - 1) == 0)
+		if ((*i) != 0 && is_sep(str, (*i) - 1) == 0)
 			save_word(&data->token, str, (*i), start);
 		if (type == APPEND || type == HEREDOC || type == PIPE
-			|| type == INPUT || type == TRUNC || type == END)
+			|| type == REDIRECT_IN || type == REDIRECT_OUT || type == END)
 		{
-			save_separator(&data->token, str, (*i), type);
+			save_sep(&data->token, str, (*i), type);
 			if (type == APPEND || type == HEREDOC)
 				(*i)++;
 		}

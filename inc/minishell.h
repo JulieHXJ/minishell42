@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 16:53:04 by xhuang            #+#    #+#             */
-/*   Updated: 2025/01/17 19:13:51 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/01/18 19:13:51 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 # include <readline/readline.h>
 # include <signal.h>
 # include <stdbool.h>
+# include <errno.h>
+# include <sys/stat.h>
 
 // macros
 # define PROMPT "\002\001\e[0m\e[32m\002 Minishell>$ \001\e[0m\002"
@@ -29,8 +31,8 @@
 # define WORD 2
 # define VAR 3
 # define PIPE 4
-# define INPUT 5
-# define TRUNC 6
+# define REDIRECT_IN 5
+# define REDIRECT_OUT 6
 # define HEREDOC 7
 # define APPEND 8
 # define END 9
@@ -116,58 +118,76 @@ char				*envp_value(char **env, char *var);
 // pipe
 bool				re_pipe(t_pipe *io);
 void				close_pipe_fds(t_cmd *cmds, t_cmd *skip_cmd);
+void				free_io(t_pipe *io);
+bool				check_infile_outfile(t_pipe *io);
+bool				redirect_io(t_pipe *io);
+bool				set_pipe_fds(t_cmd *cmds, t_cmd *c);
+bool				create_pipes(t_shell *data);
 
 // signal
 void				set_signals(void);
 void				ignore_sigquit(void);
 
-// builtins
-int					exit_builtin(t_shell *data, char **args);
+// execute builtins
+int					execute_cmd(t_shell *data, t_cmd *cmd);
+int					exit_cmd(t_shell *data, char **args);
+int					execute(t_shell *data);
 
 // parsing
 bool				parse_input(t_shell *data);
-int	handle_quotes(t_shell *data);
-int	delete_quotes(t_token **token_node);
+int					handle_quotes(t_shell *data);
+int					delete_quotes(t_token **token_node);
+void				parse_str(t_cmd **cmd, t_token **token_lst);
+char				*get_cmd_path(t_shell *data, char *name);
 
 // tokens
 int					tokenization(t_shell *data, char *str);
 int					check_token_list(t_token **token_lst);
 
 // token_utils
-int					save_word_or_sep(int *i, char *str, int start,
-						t_shell *data);
 int					set_status(int status, char *str, int i);
-int					is_separator(char *str, int i);
-int					save_word(t_token **token_lst, char *str, int index,
-						int start);
-int					save_separator(t_token **token_lst, char *str, int index,
-						int type);
+int					word_or_sep(int *i, char *str, int start, t_shell *data);
 
 // check
-int	check_token_list(t_token **token_lst);
+int					check_token_list(t_token **token_lst);
 int					check_if_var(t_token **token_lst);
-bool var_valid(char c);
+bool				var_valid(char c);
 
 // token_list.c
-t_token				*lst_new_token(char *str, char *str_backup, int type,
-						int status);
-void				lst_add_back_token(t_token **alst, t_token *new_node);
-void				lstdelone_token(t_token *lst, void (*del)(void *));
-void				lstclear_token(t_token **lst, void (*del)(void *));
-t_token				*insert_lst_between(t_token **head, t_token *to_del,
+t_token				*new_tkn(char *str, char *str_backup, int type, int status);
+void				add_back_tkn(t_token **alst, t_token *new_node);
+void				delone_tkn(t_token *lst, void (*del)(void *));
+void				clear_tkn(t_token **lst, void (*del)(void *));
+t_token				*insert_tkn(t_token **head, t_token *to_del,
 						t_token *insert);
 
 // expander
 int					var_expander(t_shell *data, t_token **token_lst);
-int	var_length(char *str);
-void	copy_var(char *str, char *value, int *j);
-char	*new_token(char *oldstr, char *value, int newstr_size, int index);
-int	replace_var(t_token **token_node, char *var_value, int n);
-char	*retrieve_var(t_token *token, char *str, t_shell *data);
-char	*identify_var(char *str);
+int					var_length(char *str);
+void				copy_var(char *str, char *value, int *j);
+char				*new_token(char *oldstr, char *value, int newstr_size,
+						int index);
+int					replace_var(t_token **token_node, char *var_value, int n);
+char				*retrieve_var(t_token *token, char *str, t_shell *data);
+char				*identify_var(char *str);
 
+// commands
+int					echo_cmd(t_shell *data, char **args);
+void				handle_commands(t_shell *data, t_token *token);
 
-//commands
-int	echo_cmd(t_shell *data, char **args);
+// cmd list
+void				cmd_init(t_cmd **cmd);
+t_cmd				*new_cmd(bool value);
+void				add_back_cmd(t_cmd **alst, t_cmd *new_node);
+t_cmd				*last_cmd(t_cmd *cmd);
+void				delone_cmd(t_cmd *lst, void (*del)(void *));
+void				clear_cmd(t_cmd **lst, void (*del)(void *));
+
+// arguments
+int					handle_args(t_token **token_node, t_cmd *last_cmd);
+void				remove_empty(t_token **tokens);
+int					add_args_echo(t_token **token_node, t_cmd *last_cmd);
+int					create_args_echo(t_token **token_node, t_cmd *last_cmd);
+
 
 #endif

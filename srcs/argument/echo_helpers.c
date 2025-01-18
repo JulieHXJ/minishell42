@@ -1,21 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lsdadd_front.c                                  :+:      :+:    :+:   */
+/*   echo_helpers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/10 17:59:19 by xhuang            #+#    #+#             */
-/*   Updated: 2024/11/11 17:49:38 by xhuang           ###   ########.fr       */
+/*   Created: 2025/01/18 17:41:25 by xhuang            #+#    #+#             */
+/*   Updated: 2025/01/18 17:47:29 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-void	ft_lstadd_front(t_list **list, t_list *new)
+void	remove_empty(t_token **tokens)
 {
-	if (!list || !new)
-		return ;
-	new->next = *list;
-	*list = new;
+	t_token	*temp;
+
+	temp = *tokens;
+	while (temp->type == WORD || temp->type == VAR)
+	{
+		if (temp->type == VAR && temp->input[0] == '\0'
+			&& temp->var_check == false)
+		{
+			temp = temp->next;
+			if (temp == (*tokens)->next)
+				(*tokens) = (*tokens)->next;
+			delone_tkn(temp->prev, free_ptr);
+		}
+		else
+			temp = temp->next;
+	}
 }

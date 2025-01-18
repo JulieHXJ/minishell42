@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 16:53:00 by xhuang            #+#    #+#             */
-/*   Updated: 2025/01/17 19:18:06 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/01/18 19:12:56 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,44 +32,57 @@ static bool	instruction_msg(bool value)
 // 	return (true);
 // }
 
-void	terminate_shell(t_shell *data, int exit_code)
+void	terminate_shell(t_shell *minishell, int exit_code)
 {
-	if (data)
+	if (minishell)
 	{
-		if (data->command && data->command->pipe)
-			close_fds(data->command, true);//todo
-		free_shell(data, true);//todo
+		if (minishell->command && minishell->command->pipe)
+			close_fds(minishell->command, true);//todo
+		free_shell(minishell, true);//todo
 	}
 	exit(exit_code);
 }
 
-void	run_minishell(t_shell *data)
+void	run_minishell(t_shell *minishell)
 {
-	while (1)
+	// Parse the input (split into arguments)
+	if (parse_input(minishell) == true)
 	{
-		set_signals();
-		data->input = readline(PROMPT);
-		if (parse_input(data) == true)
-		{
-			global_exit_code = shell_execute(data);/////////////to do
-		}
-		else
-			global_exit_code = 1;
-		free_shell(data, false);
+		// Check if the command is a built-in
+		// handle_buildins()
+		// Execute external command
+		global_exit_code = execute(minishell);/////////////to do
 	}
+	else
+		global_exit_code = 1;
+	free_shell(minishell, false);
 }
 
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell	minishell;
 	(void)argv;
-	
 	if (argc != 1)
 		return (instruction_msg(false));
 	ft_memset(&minishell, 0, sizeof(t_shell));
 	if (init_shell(&minishell, envp))
 	{
-		run_minishell(&minishell);
+		while (1)
+		{
+			set_signals();//handle ctrl-\ and ctrl-c
+			minishell.input = readline(PROMPT);
+			if (!minishell.input)
+			{
+				write(1, "exit\n", 5); //exit message
+				break;
+			}
+			if (*minishell.input)
+			{
+				add_history(minishell.input);
+				run_minishell(&minishell);
+			}
+			// free(minishell.input);
+		}
 		terminate_shell(&minishell, global_exit_code);	
 	}
 	else
