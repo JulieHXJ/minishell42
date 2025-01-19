@@ -3,25 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   handle_cmd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amesmar <amesmar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 16:34:22 by xhuang            #+#    #+#             */
-/*   Updated: 2025/01/18 17:53:36 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/01/19 21:55:17 by amesmar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "minishell.h"
-
-void	cmd_init(t_cmd **cmd)
-{
-	(*cmd)->cmd = NULL;
-	(*cmd)->cmd_path = NULL;
-	(*cmd)->arg = NULL;
-	(*cmd)->pipe_out = false;
-	(*cmd)->pipe_fd = 0;
-	(*cmd)->prev = NULL;
-	(*cmd)->next = NULL;
-}
 
 static void	no_arg(t_shell *data)
 {
@@ -53,19 +42,23 @@ void	handle_commands(t_shell *data, t_token *token)
 	while (temp->next != NULL)
 	{
 		if (temp == token)
+		{
 			add_back_cmd(&data->command, new_cmd(false));
+		}
 		if (temp->type == WORD || temp->type == VAR)
-			parse_str(&data->command, &temp);
-		// else if (temp->type == REDIRECT_IN)
-		// 	parse_redir_in(&data->command, &temp);
-		// else if (temp->type == REDIRECT_OUT)
-		// 	parse_redir_out(&data->command, &temp);
-		// else if (temp->type == HEREDOC)
-		// 	parse_heredoc(data, &data->command, &temp);
-		// else if (temp->type == APPEND)
-		// 	parse_append(&data->command, &temp);
-		// else if (temp->type == PIPE)
-		// 	parse_pipe(&data->command, &temp);
+		{
+			parse_str(&data->command, &temp, data);
+		}
+		else if (temp->type == REDIRECT_IN)
+			printf("REDIRECT_IN\n");
+		else if (temp->type == REDIRECT_OUT)
+			printf("REDIRECT_OUT\n");
+		else if (temp->type == HEREDOC)
+			printf("HEREDOC\n");
+		else if (temp->type == APPEND)
+			printf("APPEND\n");
+		else if (temp->type == PIPE)
+			printf("PIPE\n");
 		else if (temp->type == END)
 			break ;
 	}

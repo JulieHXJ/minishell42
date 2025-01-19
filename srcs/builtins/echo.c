@@ -3,37 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amesmar <amesmar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 18:54:29 by xhuang            #+#    #+#             */
-/*   Updated: 2025/01/18 17:51:59 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/01/19 21:33:16 by amesmar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static bool	is_flag(char *argv)
+static bool	is_n_flag(char *arg)
 {
 	int		i;
-	bool	flag;
+	bool	n_flag;
 
-	flag = false;
+	n_flag = false;
 	i = 0;
-	if (argv[i] != '-')
-		return (flag);
+	if (arg[i] != '-')
+		return (n_flag);
 	i++;
-	while (argv[i] && argv[i] == 'n')
+	while (arg[i] && arg[i] == 'n')
 		i++;
-	if (argv[i] == '\0')
-		flag = true;
-	return (flag);
+	if (arg[i] == '\0')
+		n_flag = true;
+	return (n_flag);
 }
-
-static void	print_args(char **args, bool flag, int i)
+static void	echo_print_args(char **args, bool n_flag, int i)
 {
 	if (!args[i])
 	{
-		if (!flag)
+		if (!n_flag)
 			ft_putchar_fd('\n', STDOUT_FILENO);
 		return ;
 	}
@@ -42,25 +41,25 @@ static void	print_args(char **args, bool flag, int i)
 		ft_putstr_fd(args[i], STDOUT_FILENO);
 		if (args[i + 1])
 			ft_putchar_fd(' ', STDOUT_FILENO);
-		else if (!args[i + 1] && !flag)
+		else if (!args[i + 1] && !n_flag)
 			ft_putchar_fd('\n', STDOUT_FILENO);
 		i++;
 	}
 }
 
-int	echo_cmd(t_shell *data, char **argv)
+int	echo_builtin(t_shell *data, char **args)
 {
 	int		i;
-	bool	flag;
+	bool	n_flag;
 
 	(void)data;
-	flag = false;
+	n_flag = false;
 	i = 1;
-	while (argv[i] && is_flag(argv[i]))
+	while (args[i] && is_n_flag(args[i]))
 	{
-		flag = true;
+		n_flag = true;
 		i++;
 	}
-	print_args(argv, flag, i);
+	echo_print_args(args, n_flag, i);
 	return (EXIT_SUCCESS);
 }

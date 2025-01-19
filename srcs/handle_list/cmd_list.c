@@ -3,14 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_list.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amesmar <amesmar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 16:45:24 by xhuang            #+#    #+#             */
-/*   Updated: 2025/01/18 18:01:34 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/01/19 21:54:26 by amesmar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	cmd_init(t_cmd **cmd)
+{
+	(*cmd)->cmd = NULL;
+	(*cmd)->cmd_path = NULL;
+	(*cmd)->arg = NULL;
+	(*cmd)->pipe_out = false;
+	(*cmd)->pipe_fd = 0;
+	(*cmd)->prev = NULL;
+	(*cmd)->next = NULL;
+}
 
 t_cmd	*new_cmd(bool value)
 {
@@ -47,7 +58,10 @@ void	add_back_cmd(t_cmd **alst, t_cmd *new_node)
 t_cmd	*last_cmd(t_cmd *cmd)
 {
 	while (cmd->next != NULL)
+	{
+		printf("CMD IS NOT NULL\n");
 		cmd = cmd->next;
+	}
 	return (cmd);
 }
 
@@ -76,3 +90,36 @@ void	clear_cmd(t_cmd **lst, void (*del)(void *))
 		*lst = temp;
 	}
 }
+
+void	delone_token(t_token *lst, void (*del)(void *))
+{
+	if (del && lst && lst->input)
+	{
+		(*del)(lst->input);
+		lst->input = NULL;
+	}
+	if (del && lst && lst->input_backup)
+	{
+		(*del)(lst->input_backup);
+		lst->input_backup = NULL;
+	}
+	if (lst->prev)
+		lst->prev->next = lst->next;
+	if (lst->next)
+		lst->next->prev = lst->prev;
+	free_ptr(lst);
+}
+
+void	clear_token(t_token **lst, void (*del)(void *))
+{
+	t_token	*tmp;
+
+	tmp = NULL;
+	while (*lst != NULL)
+	{
+		tmp = (*lst)->next;
+		delone_token(*lst, del);
+		*lst = tmp;
+	}
+}
+

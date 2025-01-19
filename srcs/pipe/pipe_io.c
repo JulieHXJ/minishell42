@@ -3,14 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_io.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amesmar <amesmar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:48:53 by amesmar           #+#    #+#             */
-/*   Updated: 2025/01/18 19:07:42 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/01/19 19:13:03 by amesmar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+
+bool	restore_io(t_pipe *io)
+{
+	int	ret;
+
+	ret = true;
+	if (!io)
+		return (ret);
+	if (io->stdin_backup != -1)
+	{
+		if (dup2(io->stdin_backup, STDIN_FILENO) == -1)
+			ret = false;
+		close(io->stdin_backup);
+		io->stdin_backup = -1;
+	}
+	if (io->stdout_backup != -1)
+	{
+		if (dup2(io->stdout_backup, STDOUT_FILENO) == -1)
+			ret = false;
+		close(io->stdout_backup);
+		io->stdout_backup = -1;
+	}
+	return (ret);
+}
+
 
 bool	check_infile_outfile(t_pipe *io)
 {
@@ -43,54 +69,40 @@ bool	re_pipe(t_pipe *io)
 	ret = true;
 	if (!io)
 		return (ret);
-	if (io->stdin_backup != -1)
-	{
-		if (dup2(io->stdin_backup, STDIN_FILENO) == -1)
-			ret = false;
-		close(io->stdin_backup);
-		io->stdin_backup = -1;
-	}
-	if (io->stdout_backup != -1)
-	{
-		if (dup2(io->stdout_backup, STDOUT_FILENO) == -1)
-			ret = false;
-		close(io->stdout_backup);
-		io->stdout_backup = -1;
-	}
+	io->stdin_backup = dup(STDIN_FILENO);
+	if (io->stdin_backup == -1)
+		ret = errmsg_cmd("dup", "stdin backup", strerror(errno), false);
+	io->stdout_backup = dup(STDOUT_FILENO);
+	if (io->stdout_backup == -1)
+		ret = errmsg_cmd("dup", "stdout backup", strerror(errno), false);
+	if (io->fd_in != -1)
+		if (dup2(io->fd_in, STDIN_FILENO) == -1)
+			ret = errmsg_cmd("dup2", io->infile, strerror(errno), false);
+	if (io->fd_out != -1)
+		if (dup2(io->fd_out, STDOUT_FILENO) == -1)
+			ret = errmsg_cmd("dup2", io->outfile, strerror(errno), false);
 	return (ret);
 }
 
 bool	redirect_io(t_pipe *io)
 {
-	int ret;
+	int	ret;
 
 	ret = true;
 	if (!io)
 		return (ret);
 	io->stdin_backup = dup(STDIN_FILENO);
 	if (io->stdin_backup == -1)
-	{
-		printf("dup stdin backup %s", strerror(errno));
-		ret = false;
-	}
+		ret = errmsg_cmd("dup", "stdin backup", strerror(errno), false);
 	io->stdout_backup = dup(STDOUT_FILENO);
 	if (io->stdout_backup == -1)
-	{
-		printf("dup stdout backup %s", strerror(errno));
-		ret = false;
-	}
+		ret = errmsg_cmd("dup", "stdout backup", strerror(errno), false);
 	if (io->fd_in != -1)
 		if (dup2(io->fd_in, STDIN_FILENO) == -1)
-		{
-			printf("dup2 %s %s", io->infile, strerror(errno));
-			ret = false;
-		}
+			ret = errmsg_cmd("dup2", io->infile, strerror(errno), false);
 	if (io->fd_out != -1)
 		if (dup2(io->fd_out, STDOUT_FILENO) == -1)
-		{
-			printf("dup2 %s %s", io->outfile, strerror(errno));
-			ret = false;
-		}
+			ret = errmsg_cmd("dup2", io->outfile, strerror(errno), false);
 	return (ret);
 }
 

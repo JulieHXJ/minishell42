@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_helpers.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amesmar <amesmar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 19:04:02 by amesmar           #+#    #+#             */
-/*   Updated: 2025/01/18 17:18:06 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/01/19 20:32:53 by amesmar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ static int	save_word(t_token **token_lst, char *str, int index, int start)
 		i++;
 	}
 	word[i] = '\0';
-	add_back_tkn(token_lst, new_tkn(word, ft_strdup(word), WORD, DEFAULT));
+	add_back_tkn(token_lst, \
+			new_tkn(word, ft_strdup(word), WORD, DEFAULT));
 	return (0);
 }
 

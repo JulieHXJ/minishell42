@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amesmar <amesmar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 18:16:11 by xhuang            #+#    #+#             */
-/*   Updated: 2025/01/18 19:12:27 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/01/19 21:29:38 by amesmar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ static int	get_children(t_shell *data)
 	return (status);
 }
 
+
 static int	create_children(t_shell *data)
 {
 	t_cmd	*cmd;
@@ -48,12 +49,9 @@ static int	create_children(t_shell *data)
 	{
 		data->pid = fork();
 		if (data->pid == -1)
-		{
-			//print something return (errmsg_cmd("fork", NULL, strerror(errno), EXIT_FAILURE));
-			return EXIT_FAILURE;
-		}
+			return (errmsg_cmd("fork", NULL, strerror(errno), EXIT_FAILURE));
 		else if (data->pid == 0)
-			execute_cmd(data, cmd);
+			execute_command(data, cmd);
 		cmd = cmd->next;
 	}
 	return (get_children(data));
@@ -72,22 +70,29 @@ static int	prep_for_exec(t_shell *data)
 	}
 	if (!create_pipes(data))
 		return (EXIT_FAILURE);
-	return (127); // command not found
+	return (127);
 }
 
-int	execute(t_shell *data)
+
+int	execute(t_shell *data, char **argv)
 {
 	int	ret;
 
+	(void)argv;
+
+	t_cmd	*cmd;
+
+	cmd = data->command;
+
 	ret = prep_for_exec(data);
-	if (ret != 127) // command not found
+	if (ret != 127)
 		return (ret);
 	if (!data->command->pipe_out && !data->command->prev
 		&& check_infile_outfile(data->command->pipe))
 	{
 		redirect_io(data->command->pipe);
-		ret = execute_cmd(data, data->command);
-		re_pipe(data->command->pipe);
+		ret = execute_builtin(data, data->command);
+		restore_io(data->command->pipe);
 	}
 	if (ret != 127)
 		return (ret);

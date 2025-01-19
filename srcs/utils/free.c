@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amesmar <amesmar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:30:23 by amesmar           #+#    #+#             */
-/*   Updated: 2025/01/18 18:01:17 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/01/19 21:47:57 by amesmar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,11 @@ void	free_shell(t_shell *minishell, bool free_all)
 		free_ptr(minishell->input);
 		minishell->input = NULL;
 	}
-    ///////// to do ////////
-	// if (minishell && minishell->token)
-	// 	lstclear_token(&minishell->token, &free_ptr);
-	// if (minishell && minishell->command)
-	// 	lst_clear_cmd(&minishell->command, &free_ptr);
+    /////// to do ////////
+	if (minishell && minishell->token)
+		clear_token(&minishell->token, &free_ptr);
+	if (minishell && minishell->command)
+		clear_cmd(&minishell->command, &free_ptr);
 	if (free_all == true)
 	{
 		if (minishell && minishell->cur_dir)

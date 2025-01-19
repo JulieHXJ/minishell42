@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_args.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amesmar <amesmar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 17:26:14 by xhuang            #+#    #+#             */
-/*   Updated: 2025/01/18 17:49:42 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/01/19 19:48:18 by amesmar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static int	create_args(t_token **token_node, t_cmd *last_cmd)
 	return (0);
 }
 
-static char	**copy_args(int len, char **arr, t_cmd *cmd, t_token **node)
+static char	**copy_args(int len, char **arr, t_cmd *comd, t_token **node)
 {
 	int		i;
 	t_token	*temp;
@@ -61,7 +61,7 @@ static char	**copy_args(int len, char **arr, t_cmd *cmd, t_token **node)
 	temp = *node;
 	while (i < len)
 	{
-		arr[i] = cmd->arg[i];
+		arr[i] = comd->arg[i];
 		i++;
 	}
 	while (temp->type == WORD || temp->type == VAR)

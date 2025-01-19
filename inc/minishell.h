@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amesmar <amesmar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 16:53:04 by xhuang            #+#    #+#             */
-/*   Updated: 2025/01/18 19:13:51 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/01/19 21:54:38 by amesmar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,16 +99,18 @@ typedef struct s_shell
 bool				init_shell(t_shell *data, char **envp);
 
 // run
-void				run_minishell(t_shell *data);
+void				run_minishell(t_shell *minishell,char **argv);
 
 // exit
 void				terminate_shell(t_shell *data, int exit_code);
+int					exit_builtin(t_shell *data, char **args);
 
 // free
 void				free_shell(t_shell *data, bool clear_history);
 void				free_ptr(void *ptr);
 void				free_array(char **arr);
 void				close_fds(t_cmd *cmds, bool close_backups);
+
 
 // envp
 int					envp_index(char **env, char *var);
@@ -121,23 +123,26 @@ void				close_pipe_fds(t_cmd *cmds, t_cmd *skip_cmd);
 void				free_io(t_pipe *io);
 bool				check_infile_outfile(t_pipe *io);
 bool				redirect_io(t_pipe *io);
+bool				restore_io(t_pipe *io);
 bool				set_pipe_fds(t_cmd *cmds, t_cmd *c);
 bool				create_pipes(t_shell *data);
 
 // signal
 void				set_signals(void);
 void				ignore_sigquit(void);
+void				set_signals_noninteractive(void);
 
 // execute builtins
-int					execute_cmd(t_shell *data, t_cmd *cmd);
+int					execute_command(t_shell *data, t_cmd *cmd);
 int					exit_cmd(t_shell *data, char **args);
-int					execute(t_shell *data);
+int					execute(t_shell *data,char **argv);
+int					execute_builtin(t_shell *data, t_cmd *cmd);
 
 // parsing
 bool				parse_input(t_shell *data);
 int					handle_quotes(t_shell *data);
 int					delete_quotes(t_token **token_node);
-void				parse_str(t_cmd **cmd, t_token **token_lst);
+void				parse_str(t_cmd **cmd, t_token **token_lst, t_shell *minishell);
 char				*get_cmd_path(t_shell *data, char *name);
 
 // tokens
@@ -172,22 +177,28 @@ char				*retrieve_var(t_token *token, char *str, t_shell *data);
 char				*identify_var(char *str);
 
 // commands
-int					echo_cmd(t_shell *data, char **args);
+int					echo_builtin(t_shell *data, char **args);
 void				handle_commands(t_shell *data, t_token *token);
 
 // cmd list
-void				cmd_init(t_cmd **cmd);
 t_cmd				*new_cmd(bool value);
 void				add_back_cmd(t_cmd **alst, t_cmd *new_node);
 t_cmd				*last_cmd(t_cmd *cmd);
 void				delone_cmd(t_cmd *lst, void (*del)(void *));
 void				clear_cmd(t_cmd **lst, void (*del)(void *));
+void				clear_token(t_token **lst, void (*del)(void *));
+void				delone_token(t_token *lst, void (*del)(void *));
+
 
 // arguments
 int					handle_args(t_token **token_node, t_cmd *last_cmd);
 void				remove_empty(t_token **tokens);
 int					add_args_echo(t_token **token_node, t_cmd *last_cmd);
 int					create_args_echo(t_token **token_node, t_cmd *last_cmd);
+
+//error 
+int					errmsg_cmd(char *command, char *detail, char *error_message, int error_nb);
+void				errmsg(char *errmsg, char *detail, int quotes);
 
 
 #endif

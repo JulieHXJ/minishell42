@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokens.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amesmar <amesmar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 19:03:15 by amesmar           #+#    #+#             */
-/*   Updated: 2025/01/18 18:06:17 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/01/19 20:29:56 by amesmar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,12 @@ int	tokenization(t_shell *data, char *str)
 	if (status != DEFAULT)
 	{
 		if (status == DQUOTE)
-			ft_printf("unexpected EOF while looking for matching \"\n");
+			errmsg("unexpected EOF while looking for matching", "\"", true);
 		else if (status == SQUOTE)
-			ft_printf("unexpected EOF while looking for matching \'\n");
-		ft_printf("syntax error (unexpected end of file)\n");
+			errmsg("unexpected EOF while looking for matching", "\'", true);
+		errmsg("syntax error", "unexpected end of file", false);
 		return (1);
 	}
 	return (0);
 }
+

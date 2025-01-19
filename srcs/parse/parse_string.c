@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_string.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amesmar <amesmar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 16:58:30 by xhuang            #+#    #+#             */
-/*   Updated: 2025/01/18 17:38:13 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/01/19 21:55:25 by amesmar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,19 @@ static void	split_token(t_cmd *last_cmd, char *cmd_str)
 	free_array(strs);
 }
 
-void	parse_str(t_cmd **cmd, t_token **token_lst)
+
+void	parse_str(t_cmd **cmd, t_token **token_lst, t_shell *minishell)
 {
 	t_token	*temp;
 	t_cmd	*last_command;
 
+	(void)minishell;
+
+
 	temp = *token_lst;
+	
+
+	
 	while (temp->type == WORD || temp->type == VAR)
 	{
 		last_command = last_cmd(*cmd);

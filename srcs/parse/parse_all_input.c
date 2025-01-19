@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_all_input.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amesmar <amesmar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 18:33:19 by amesmar           #+#    #+#             */
-/*   Updated: 2025/01/18 19:14:57 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/01/19 21:29:48 by amesmar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,13 @@ static bool	input_is_space(char *input)
 
 bool	parse_input(t_shell *data)
 {
-	// if (data->input == NULL)
-	// 	exit_builtin(data, NULL);
-	if (ft_strcmp(data->input, "\0") == 0)
+	if (data->input == NULL)
+		exit_builtin(data, NULL);
+	else if (ft_strcmp(data->input, "\0") == 0)
 		return (false);
 	else if (input_is_space(data->input))
 		return (true);
-	// add_history(data->input);
+	add_history(data->input);
 	if (tokenization(data, data->input) == 1)
 		return (false);
 	if (data->token->type == END)
