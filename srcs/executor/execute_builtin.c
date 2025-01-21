@@ -6,7 +6,7 @@
 /*   By: amesmar <amesmar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 18:29:32 by xhuang            #+#    #+#             */
-/*   Updated: 2025/01/20 16:26:19 by amesmar          ###   ########.fr       */
+/*   Updated: 2025/01/21 15:41:04 by amesmar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,9 @@ int	execute_builtin(t_shell *data, t_cmd *cmd)
 	int	ret;
 
 	ret = 127;
-	// if (ft_strncmp(cmd->command, "cd", 3) == 0)
-	// 	ret = cd_builtin(data, cmd->args);
-	// else 
-	if (ft_strncmp(cmd->cmd, "echo", 5) == 0)
+	if (ft_strncmp(cmd->cmd, "cd", 3) == 0)
+		ret = cd_builtin(data, cmd->arg);
+	else if (ft_strncmp(cmd->cmd, "echo", 5) == 0)
 	{
 		ret = echo_builtin(data, cmd->arg);
 	}

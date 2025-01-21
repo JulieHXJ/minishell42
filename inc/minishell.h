@@ -6,7 +6,7 @@
 /*   By: amesmar <amesmar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 16:53:04 by xhuang            #+#    #+#             */
-/*   Updated: 2025/01/19 21:54:38 by amesmar          ###   ########.fr       */
+/*   Updated: 2025/01/21 15:52:03 by amesmar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,7 @@ void				close_fds(t_cmd *cmds, bool close_backups);
 int					envp_index(char **env, char *var);
 int					envp_count(char **env);
 char				*envp_value(char **env, char *var);
+bool	set_env_var(t_shell *data, char *key, char *value);
 
 // pipe
 bool				re_pipe(t_pipe *io);
@@ -134,9 +135,10 @@ void				set_signals_noninteractive(void);
 
 // execute builtins
 int					execute_command(t_shell *data, t_cmd *cmd);
-int					exit_cmd(t_shell *data, char **args);
 int					execute(t_shell *data,char **argv);
 int					execute_builtin(t_shell *data, t_cmd *cmd);
+int	cd_builtin(t_shell *data, char **args);
+
 
 // parsing
 bool				parse_input(t_shell *data);
