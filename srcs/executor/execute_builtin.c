@@ -6,7 +6,7 @@
 /*   By: amesmar <amesmar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 18:29:32 by xhuang            #+#    #+#             */
-/*   Updated: 2025/01/19 21:32:19 by amesmar          ###   ########.fr       */
+/*   Updated: 2025/01/20 16:26:19 by amesmar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,14 +82,13 @@ int	execute_builtin(t_shell *data, t_cmd *cmd)
 	// 	ret = pwd_builtin(data, cmd->args);
 	// else if (ft_strncmp(cmd->command, "unset", 6) == 0)
 	// 	ret = unset_builtin(data, cmd->args);
-	// else if (ft_strncmp(cmd->command, "exit", 5) == 0)
-	// 	ret = exit_builtin(data, cmd->args);
+	else if (ft_strncmp(cmd->cmd, "exit", 5) == 0)
+		ret = exit_builtin(data, cmd->arg);
 	return (ret);
 }
 
 int	execute_command(t_shell *data, t_cmd *cmd)
 {
-	printf("shell data is after eceecute : %s\n", data->input);
 	int	ret;
 
 	if (!cmd || !cmd->cmd)
@@ -102,7 +101,6 @@ int	execute_command(t_shell *data, t_cmd *cmd)
 	close_fds(data->command, false);
 	if (ft_strchr(cmd->cmd, '/') == NULL)
 	{
-		printf("shell data is after builtin : %s\n", data->input);
 		ret = execute_builtin(data, cmd);
 		if (ret != 127)
 			terminate_shell(data, ret);
