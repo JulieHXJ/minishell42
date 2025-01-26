@@ -6,7 +6,7 @@
 /*   By: amesmar <amesmar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 16:53:00 by xhuang            #+#    #+#             */
-/*   Updated: 2025/01/19 21:40:39 by amesmar          ###   ########.fr       */
+/*   Updated: 2025/01/25 15:34:45 by amesmar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ void	run_minishell(t_shell *minishell,char **argv)
 	{
 		set_signals();//handle ctrl-\ and ctrl-c
 		minishell->input = readline(PROMPT);
-		set_signals_noninteractive();
 		if (parse_input(minishell) == true)
 			global_exit_code = execute(minishell, argv);
 		else
@@ -64,8 +63,8 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_shell	minishell;
 	(void)argv;
-	// if (argc != 1)
-	// 	return (instruction_msg(false));
+	if (argc != 1)
+		return (instruction_msg(false));
 	ft_memset(&minishell, 0, sizeof(t_shell));
 	if (!check_input(argc) || !init_shell(&minishell, envp))
 		terminate_shell(NULL, EXIT_FAILURE);

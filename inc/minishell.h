@@ -6,7 +6,7 @@
 /*   By: amesmar <amesmar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 16:53:04 by xhuang            #+#    #+#             */
-/*   Updated: 2025/01/21 15:52:03 by amesmar          ###   ########.fr       */
+/*   Updated: 2025/01/25 12:46:50 by amesmar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,8 +137,9 @@ void				set_signals_noninteractive(void);
 int					execute_command(t_shell *data, t_cmd *cmd);
 int					execute(t_shell *data,char **argv);
 int					execute_builtin(t_shell *data, t_cmd *cmd);
-int	cd_builtin(t_shell *data, char **args);
-
+int					cd_builtin(t_shell *data, char **args);
+int					pwd_builtin(t_shell *data, char **args);
+int					env_builtin(t_shell *data, char **args);
 
 // parsing
 bool				parse_input(t_shell *data);
