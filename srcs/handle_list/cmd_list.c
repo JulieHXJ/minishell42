@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_list.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amesmar <amesmar@student.42.fr>            +#+  +:+       +#+        */
+/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 16:45:24 by xhuang            #+#    #+#             */
-/*   Updated: 2025/01/19 21:54:26 by amesmar          ###   ########.fr       */
+/*   Updated: 2025/01/26 18:06:29 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ t_cmd	*last_cmd(t_cmd *cmd)
 {
 	while (cmd->next != NULL)
 	{
-		printf("CMD IS NOT NULL\n");
+		// printf("CMD IS NOT NULL\n");
 		cmd = cmd->next;
 	}
 	return (cmd);
@@ -122,4 +122,3 @@ void	clear_token(t_token **lst, void (*del)(void *))
 		*lst = tmp;
 	}
 }
-

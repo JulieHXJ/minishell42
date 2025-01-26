@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 16:12:00 by xhuang            #+#    #+#             */
-/*   Updated: 2025/01/17 16:27:46 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/01/26 16:52:48 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	replace_var(t_token **token_node, char *var_value, int n)
 	return (0);
 }
 
-char	*replace_str_heredoc(char *str, char *var_value, int n)
+char	*replace_val_hd(char *str, char *var_value, int n)
 {
 	char	*tmp;
 

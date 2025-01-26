@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amesmar <amesmar@student.42.fr>            +#+  +:+       +#+        */
+/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 16:53:04 by xhuang            #+#    #+#             */
-/*   Updated: 2025/01/25 12:46:50 by amesmar          ###   ########.fr       */
+/*   Updated: 2025/01/26 18:00:14 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,13 @@
 
 // includes
 # include "../libft/libft.h"
+# include <errno.h>
+# include <fcntl.h>
 # include <limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
 # include <stdbool.h>
-# include <errno.h>
 # include <sys/stat.h>
 
 // macros
@@ -99,7 +100,7 @@ typedef struct s_shell
 bool				init_shell(t_shell *data, char **envp);
 
 // run
-void				run_minishell(t_shell *minishell,char **argv);
+void				run_minishell(t_shell *minishell, char **argv);
 
 // exit
 void				terminate_shell(t_shell *data, int exit_code);
@@ -111,19 +112,18 @@ void				free_ptr(void *ptr);
 void				free_array(char **arr);
 void				close_fds(t_cmd *cmds, bool close_backups);
 
-
 // envp
 int					envp_index(char **env, char *var);
 int					envp_count(char **env);
 char				*envp_value(char **env, char *var);
-bool	set_env_var(t_shell *data, char *key, char *value);
+bool				set_env_var(t_shell *data, char *key, char *value);
 
 // pipe
+void				init_io(t_cmd *cmd);
 bool				re_pipe(t_pipe *io);
 void				close_pipe_fds(t_cmd *cmds, t_cmd *skip_cmd);
 void				free_io(t_pipe *io);
 bool				check_infile_outfile(t_pipe *io);
-bool				redirect_io(t_pipe *io);
 bool				restore_io(t_pipe *io);
 bool				set_pipe_fds(t_cmd *cmds, t_cmd *c);
 bool				create_pipes(t_shell *data);
@@ -135,17 +135,23 @@ void				set_signals_noninteractive(void);
 
 // execute builtins
 int					execute_command(t_shell *data, t_cmd *cmd);
-int					execute(t_shell *data,char **argv);
+int					execute(t_shell *data, char **argv);
 int					execute_builtin(t_shell *data, t_cmd *cmd);
 int					cd_builtin(t_shell *data, char **args);
 int					pwd_builtin(t_shell *data, char **args);
 int					env_builtin(t_shell *data, char **args);
+int					export_builtin(t_shell *data, char **args);
 
 // parsing
 bool				parse_input(t_shell *data);
 int					handle_quotes(t_shell *data);
 int					delete_quotes(t_token **token_node);
-void				parse_str(t_cmd **cmd, t_token **token_lst, t_shell *minishell);
+bool	remove_old_fd(t_pipe *io, bool infile);
+void				parse_str(t_cmd **cmd, t_token **token_lst,
+						t_shell *minishell);
+void				parse_redir_in(t_cmd **last_cmd, t_token **token_lst);
+void	parse_redir_out(t_cmd **last_cmd, t_token **token_lst);
+void	parse_append(t_cmd **last_node, t_token **token_lst);
 char				*get_cmd_path(t_shell *data, char *name);
 
 // tokens
@@ -192,16 +198,22 @@ void				clear_cmd(t_cmd **lst, void (*del)(void *));
 void				clear_token(t_token **lst, void (*del)(void *));
 void				delone_token(t_token *lst, void (*del)(void *));
 
-
 // arguments
 int					handle_args(t_token **token_node, t_cmd *last_cmd);
 void				remove_empty(t_token **tokens);
 int					add_args_echo(t_token **token_node, t_cmd *last_cmd);
 int					create_args_echo(t_token **token_node, t_cmd *last_cmd);
 
-//error 
-int					errmsg_cmd(char *command, char *detail, char *error_message, int error_nb);
-void				errmsg(char *errmsg, char *detail, int quotes);
 
+//heredoc
+bool	fill_heredoc(t_shell *data, t_pipe *io, int fd);
+char	*var_expander_hd(t_shell *data, char *str);
+char	*replace_val_hd(char *str, char *var_value, int n);
+void	parse_heredoc(t_shell *mini, t_cmd **last_node, t_token **token_lst);
+
+// error
+int					errmsg_cmd(char *command, char *detail, char *error_message,
+						int error_nb);
+void				errmsg(char *errmsg, char *detail, int quotes);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amesmar <amesmar@student.42.fr>            +#+  +:+       +#+        */
+/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:30:23 by amesmar           #+#    #+#             */
-/*   Updated: 2025/01/19 21:47:57 by amesmar          ###   ########.fr       */
+/*   Updated: 2025/01/26 16:03:51 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	close_fds(t_cmd *cmds, bool close_backups)
 		if (cmds->pipe->fd_out != -1)
 			close(cmds->pipe->fd_out);
 		if (close_backups)
-			re_pipe(cmds->pipe);
+			restore_io(cmds->pipe);
 	}
 	close_pipe_fds(cmds, NULL);
 }
@@ -85,7 +85,7 @@ void	free_io(t_pipe *io)
 {
 	if (!io)
 		return ;
-	re_pipe(io);
+	restore_io(io);
 	if (io->heredoc_delimiter)
 	{
 		unlink(io->infile);

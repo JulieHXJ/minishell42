@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 18:39:34 by xhuang            #+#    #+#             */
-/*   Updated: 2025/01/18 19:15:50 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/01/26 14:49:09 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,4 +33,22 @@ bool	create_pipes(t_shell *data)
 		tmp = tmp->next;
 	}
 	return (true);
+}
+
+void	init_io(t_cmd *cmd)
+{
+	if (!cmd->pipe)
+	{
+		cmd->pipe = malloc(sizeof * cmd->pipe);
+		if (!cmd->pipe)
+			return ;
+		cmd->pipe->infile = NULL;
+		cmd->pipe->outfile = NULL;
+		cmd->pipe->heredoc_delimiter = NULL;
+		cmd->pipe->heredoc_quotes = false;
+		cmd->pipe->fd_in = -1;
+		cmd->pipe->fd_out = -1;
+		cmd->pipe->stdin_backup = -1;
+		cmd->pipe->stdout_backup = -1;
+	}
 }

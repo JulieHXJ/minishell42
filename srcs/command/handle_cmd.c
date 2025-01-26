@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_cmd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amesmar <amesmar@student.42.fr>            +#+  +:+       +#+        */
+/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 16:34:22 by xhuang            #+#    #+#             */
-/*   Updated: 2025/01/19 21:55:17 by amesmar          ###   ########.fr       */
+/*   Updated: 2025/01/26 18:00:48 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,16 @@ static void	no_arg(t_shell *data)
 	temp_cmd = last_cmd(data->command);
 }
 
+void	parse_pipe(t_cmd **cmd, t_token **token_lst)
+{
+	t_cmd	*last_node;
+
+	last_node = last_cmd(*cmd);
+	last_node->pipe_out = true;
+	add_back_cmd(&last_node, new_cmd(false));
+	*token_lst = (*token_lst)->next;
+}
+
 void	handle_commands(t_shell *data, t_token *token)
 {
 	t_token	*temp;
@@ -42,23 +52,22 @@ void	handle_commands(t_shell *data, t_token *token)
 	while (temp->next != NULL)
 	{
 		if (temp == token)
-		{
 			add_back_cmd(&data->command, new_cmd(false));
-		}
 		if (temp->type == WORD || temp->type == VAR)
-		{
 			parse_str(&data->command, &temp, data);
-		}
 		else if (temp->type == REDIRECT_IN)
-			printf("REDIRECT_IN\n");
+			parse_redir_in(&data->command, &temp);
 		else if (temp->type == REDIRECT_OUT)
-			printf("REDIRECT_OUT\n");
+			parse_redir_out(&data->command, &temp);
 		else if (temp->type == HEREDOC)
+		{
+			parse_heredoc(data, &data->command, &temp);
 			printf("HEREDOC\n");
+		}
 		else if (temp->type == APPEND)
-			printf("APPEND\n");
+			parse_append(&data->command, &temp);
 		else if (temp->type == PIPE)
-			printf("PIPE\n");
+			parse_pipe(&data->command, &temp);
 		else if (temp->type == END)
 			break ;
 	}

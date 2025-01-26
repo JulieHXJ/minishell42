@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amesmar <amesmar@student.42.fr>            +#+  +:+       +#+        */
+/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 18:16:11 by xhuang            #+#    #+#             */
-/*   Updated: 2025/01/19 21:29:38 by amesmar          ###   ########.fr       */
+/*   Updated: 2025/01/26 17:46:03 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ static int	get_children(t_shell *data)
 		status = WEXITSTATUS(save_status);
 	else
 		status = save_status;
+	// printf ("finish get child\n");
 	return (status);
 }
 
@@ -54,6 +55,7 @@ static int	create_children(t_shell *data)
 			execute_command(data, cmd);
 		cmd = cmd->next;
 	}
+	// printf("before get child\n");
 	return (get_children(data));
 }
 
@@ -90,11 +92,15 @@ int	execute(t_shell *data, char **argv)
 	if (!data->command->pipe_out && !data->command->prev
 		&& check_infile_outfile(data->command->pipe))
 	{
-		redirect_io(data->command->pipe);
+		// printf("inside condition\n");
+		re_pipe(data->command->pipe);
 		ret = execute_builtin(data, data->command);
 		restore_io(data->command->pipe);
 	}
 	if (ret != 127)
+	{
 		return (ret);
+	}
+	// printf("before create child");
 	return (create_children(data));
 }

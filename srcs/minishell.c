@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amesmar <amesmar@student.42.fr>            +#+  +:+       +#+        */
+/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 16:53:00 by xhuang            #+#    #+#             */
-/*   Updated: 2025/01/25 15:34:45 by amesmar          ###   ########.fr       */
+/*   Updated: 2025/01/26 17:55:25 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void	run_minishell(t_shell *minishell,char **argv)
 	{
 		set_signals();//handle ctrl-\ and ctrl-c
 		minishell->input = readline(PROMPT);
+		set_signals_noninteractive();
 		if (parse_input(minishell) == true)
 			global_exit_code = execute(minishell, argv);
 		else

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_io.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amesmar <amesmar@student.42.fr>            +#+  +:+       +#+        */
+/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:48:53 by amesmar           #+#    #+#             */
-/*   Updated: 2025/01/19 19:13:03 by amesmar          ###   ########.fr       */
+/*   Updated: 2025/01/26 16:00:56 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,28 +63,6 @@ void	close_pipe_fds(t_cmd *cmds, t_cmd *skip_cmd)
 }
 
 bool	re_pipe(t_pipe *io)
-{
-	int	ret;
-
-	ret = true;
-	if (!io)
-		return (ret);
-	io->stdin_backup = dup(STDIN_FILENO);
-	if (io->stdin_backup == -1)
-		ret = errmsg_cmd("dup", "stdin backup", strerror(errno), false);
-	io->stdout_backup = dup(STDOUT_FILENO);
-	if (io->stdout_backup == -1)
-		ret = errmsg_cmd("dup", "stdout backup", strerror(errno), false);
-	if (io->fd_in != -1)
-		if (dup2(io->fd_in, STDIN_FILENO) == -1)
-			ret = errmsg_cmd("dup2", io->infile, strerror(errno), false);
-	if (io->fd_out != -1)
-		if (dup2(io->fd_out, STDOUT_FILENO) == -1)
-			ret = errmsg_cmd("dup2", io->outfile, strerror(errno), false);
-	return (ret);
-}
-
-bool	redirect_io(t_pipe *io)
 {
 	int	ret;
 

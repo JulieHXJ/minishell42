@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_string.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amesmar <amesmar@student.42.fr>            +#+  +:+       +#+        */
+/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 16:58:30 by xhuang            #+#    #+#             */
-/*   Updated: 2025/01/19 21:55:25 by amesmar          ###   ########.fr       */
+/*   Updated: 2025/01/26 15:29:03 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,7 @@ void	parse_str(t_cmd **cmd, t_token **token_lst, t_shell *minishell)
 
 
 	temp = *token_lst;
-	
 
-	
 	while (temp->type == WORD || temp->type == VAR)
 	{
 		last_command = last_cmd(*cmd);

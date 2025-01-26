@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_builtin.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amesmar <amesmar@student.42.fr>            +#+  +:+       +#+        */
+/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 18:29:32 by xhuang            #+#    #+#             */
-/*   Updated: 2025/01/25 12:49:35 by amesmar          ###   ########.fr       */
+/*   Updated: 2025/01/26 17:07:02 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,12 +73,12 @@ int	execute_builtin(t_shell *data, t_cmd *cmd)
 		ret = echo_builtin(data, cmd->arg);
 	else if (ft_strncmp(cmd->cmd, "env", 4) == 0)
 		ret = env_builtin(data, cmd->arg);
-	// else if (ft_strncmp(cmd->command, "export", 7) == 0)
-	// 	ret = export_builtin(data, cmd->args);
+	else if (ft_strncmp(cmd->cmd, "export", 7) == 0)
+		ret = export_builtin(data, cmd->arg);
 	else if (ft_strncmp(cmd->cmd, "pwd", 4) == 0)
 		ret = pwd_builtin(data, cmd->arg);
-	// else if (ft_strncmp(cmd->command, "unset", 6) == 0)
-	// 	ret = unset_builtin(data, cmd->args);
+	// else if (ft_strncmp(cmd->cmd, "unset", 6) == 0)
+	// 	ret = unset_builtin(data, cmd->arg);
 	else if (ft_strncmp(cmd->cmd, "exit", 5) == 0)
 		ret = exit_builtin(data, cmd->arg);
 	return (ret);
@@ -94,7 +94,7 @@ int	execute_command(t_shell *data, t_cmd *cmd)
 	if (!check_infile_outfile(cmd->pipe))
 		terminate_shell(data, EXIT_FAILURE);
 	set_pipe_fds(data->command, cmd);
-	redirect_io(cmd->pipe);
+	re_pipe(cmd->pipe);
 	close_fds(data->command, false);
 	if (ft_strchr(cmd->cmd, '/') == NULL)
 	{
