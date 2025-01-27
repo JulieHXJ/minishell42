@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 16:12:26 by xhuang            #+#    #+#             */
-/*   Updated: 2025/01/26 17:05:30 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/01/27 19:56:19 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static char	*get_name(void)
 	{
 		return (NULL);
 	}
-	name = ft_strjoin("/temp/.heredoc_", digit);
+	name = ft_strjoin("/tmp/.heredoc_", digit);
 	free(digit);
 	i++;
 	return (name);
