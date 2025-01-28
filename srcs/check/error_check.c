@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_check.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amesmar <amesmar@student.42.fr>            +#+  +:+       +#+        */
+/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:25:25 by amesmar           #+#    #+#             */
-/*   Updated: 2025/01/19 19:06:31 by amesmar          ###   ########.fr       */
+/*   Updated: 2025/01/28 16:50:51 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,11 @@ char	*join_strs(char *str, char *add)
 
 static bool	add_detail_quotes(char *command)
 {
-	if (ft_strncmp(command, "export", 7) == 0
-		|| ft_strncmp(command, "unset", 6) == 0)
+	if (ft_strncmp(command, "export", 7) == 0 || ft_strncmp(command, "unset",
+			6) == 0)
 		return (true);
 	return (false);
 }
-
 
 int	errmsg_cmd(char *command, char *detail, char *error_message, int error_nb)
 {

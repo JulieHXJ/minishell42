@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: amesmar <amesmar@student.42.fr>            +#+  +:+       +#+         #
+#    By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/14 16:42:34 by xhuang            #+#    #+#              #
-#    Updated: 2025/01/15 17:05:24 by amesmar          ###   ########.fr        #
+#    Updated: 2025/01/28 16:52:07 by xhuang           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,12 +45,12 @@ $(NAME):	$(OBJS)
 
 clean:	
 	$(RM) $(OBJS) 
-	make clean -C $(LIBFT)
+	@make clean -C $(LIBFT)
 	@echo "Object files have been deleted."
 
 fclean: clean
 	$(RM) $(NAME)
-	make fclean -C $(LIBFT)
+	@make fclean -C $(LIBFT)
 	@echo "Library has been deleted."
 
 re: fclean all 

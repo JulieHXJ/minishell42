@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   envp.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amesmar <amesmar@student.42.fr>            +#+  +:+       +#+        */
+/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:29:17 by amesmar           #+#    #+#             */
-/*   Updated: 2025/01/21 15:50:41 by amesmar          ###   ########.fr       */
+/*   Updated: 2025/01/28 16:35:00 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ char	*envp_value(char **env, char *var)
 	return (NULL);
 }
 
-static char	**realloc_env_vars(t_shell *data, int size)
+char	**realloc_env_vars(t_shell *data, int size)
 {
 	char	**new_env;
 	int		i;

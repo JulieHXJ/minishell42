@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 16:53:04 by xhuang            #+#    #+#             */
-/*   Updated: 2025/01/26 18:00:14 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/01/28 16:57:08 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,9 @@ void				set_signals(void);
 void				ignore_sigquit(void);
 void				set_signals_noninteractive(void);
 
-// execute builtins
+// execute
+int					execute_sys_bin(t_shell *data, t_cmd *cmd);
+int					execute_local_bin(t_shell *data, t_cmd *cmd);
 int					execute_command(t_shell *data, t_cmd *cmd);
 int					execute(t_shell *data, char **argv);
 int					execute_builtin(t_shell *data, t_cmd *cmd);
@@ -141,17 +143,20 @@ int					cd_builtin(t_shell *data, char **args);
 int					pwd_builtin(t_shell *data, char **args);
 int					env_builtin(t_shell *data, char **args);
 int					export_builtin(t_shell *data, char **args);
+bool				valid_envp(char *var);
+char				**realloc_env_vars(t_shell *data, int size);
+int					unset_builtin(t_shell *mini, char **args);
 
 // parsing
 bool				parse_input(t_shell *data);
 int					handle_quotes(t_shell *data);
 int					delete_quotes(t_token **token_node);
-bool	remove_old_fd(t_pipe *io, bool infile);
+bool				remove_old_fd(t_pipe *io, bool infile);
 void				parse_str(t_cmd **cmd, t_token **token_lst,
 						t_shell *minishell);
 void				parse_redir_in(t_cmd **last_cmd, t_token **token_lst);
-void	parse_redir_out(t_cmd **last_cmd, t_token **token_lst);
-void	parse_append(t_cmd **last_node, t_token **token_lst);
+void				parse_redir_out(t_cmd **last_cmd, t_token **token_lst);
+void				parse_append(t_cmd **last_node, t_token **token_lst);
 char				*get_cmd_path(t_shell *data, char *name);
 
 // tokens
@@ -204,12 +209,12 @@ void				remove_empty(t_token **tokens);
 int					add_args_echo(t_token **token_node, t_cmd *last_cmd);
 int					create_args_echo(t_token **token_node, t_cmd *last_cmd);
 
-
-//heredoc
-bool	fill_heredoc(t_shell *data, t_pipe *io, int fd);
-char	*var_expander_hd(t_shell *data, char *str);
-char	*replace_val_hd(char *str, char *var_value, int n);
-void	parse_heredoc(t_shell *mini, t_cmd **last_node, t_token **token_lst);
+// heredoc
+bool				fill_heredoc(t_shell *data, t_pipe *io, int fd);
+char				*var_expander_hd(t_shell *data, char *str);
+char				*replace_val_hd(char *str, char *var_value, int n);
+void				parse_heredoc(t_shell *mini, t_cmd **last_node,
+						t_token **token_lst);
 
 // error
 int					errmsg_cmd(char *command, char *detail, char *error_message,

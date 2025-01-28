@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 18:54:29 by xhuang            #+#    #+#             */
-/*   Updated: 2025/01/26 17:46:18 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/01/28 16:53:36 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ static bool	is_n_flag(char *arg)
 		n_flag = true;
 	return (n_flag);
 }
+
 static void	echo_print_args(char **args, bool n_flag, int i)
 {
 	if (!args[i])

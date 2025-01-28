@@ -6,15 +6,13 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 18:50:52 by amesmar           #+#    #+#             */
-/*   Updated: 2025/01/18 18:15:59 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/01/28 17:13:21 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-
-//unused
-static bool	check_out_of_range(int neg, unsigned long long num, bool *error)
+static bool	out_of_range(int neg, unsigned long long num, bool *error)
 {
 	if ((neg == 1 && num > LONG_MAX) || (neg == -1 && num >
 			-(unsigned long)LONG_MIN))
@@ -43,7 +41,7 @@ static int	ft_atoi_long(const char *str, bool *error)
 	while (str[i] && ft_isdigit(str[i]))
 	{
 		num = (num * 10) + (str[i] - '0');
-		if (check_out_of_range(neg, num, error))
+		if (out_of_range(neg, num, error))
 			break ;
 		i++;
 	}

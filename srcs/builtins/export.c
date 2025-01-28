@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 14:26:06 by xhuang            #+#    #+#             */
-/*   Updated: 2025/01/26 14:32:34 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/01/28 16:57:21 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	export_builtin(t_shell *data, char **args)
 	char	**tmp;
 	int		ret;
 
-	ret = EXIT_SUCCESS;
+	ret = 0;
 	i = 1;
 	if (!args[i])
 		return (env_builtin(data, NULL));

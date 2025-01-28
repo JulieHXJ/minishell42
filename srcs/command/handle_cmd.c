@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 16:34:22 by xhuang            #+#    #+#             */
-/*   Updated: 2025/01/26 18:00:48 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/01/27 19:57:57 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,7 @@ void	handle_commands(t_shell *data, t_token *token)
 		else if (temp->type == REDIRECT_OUT)
 			parse_redir_out(&data->command, &temp);
 		else if (temp->type == HEREDOC)
-		{
 			parse_heredoc(data, &data->command, &temp);
-			printf("HEREDOC\n");
-		}
 		else if (temp->type == APPEND)
 			parse_append(&data->command, &temp);
 		else if (temp->type == PIPE)

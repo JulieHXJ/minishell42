@@ -6,12 +6,11 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:30:23 by amesmar           #+#    #+#             */
-/*   Updated: 2025/01/26 16:03:51 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/01/28 16:19:09 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 void	free_ptr(void *ptr)
 {
@@ -50,7 +49,7 @@ void	free_shell(t_shell *minishell, bool free_all)
 		free_ptr(minishell->input);
 		minishell->input = NULL;
 	}
-    /////// to do ////////
+	/////// to do ////////
 	if (minishell && minishell->token)
 		clear_token(&minishell->token, &free_ptr);
 	if (minishell && minishell->command)
