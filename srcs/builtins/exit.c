@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 18:50:52 by amesmar           #+#    #+#             */
-/*   Updated: 2025/01/28 17:13:21 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/05 18:56:39 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static int	get_exit_code(char *arg, bool *error)
 		*error = true;
 	while (arg[i])
 	{
-		if (!isdigit(arg[i]) && !ft_isspace(arg[i]))
+		if (!ft_isdigit(arg[i]) && !ft_isspace(arg[i]))
 			*error = true;
 		i++;
 	}
