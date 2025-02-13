@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 16:34:22 by xhuang            #+#    #+#             */
-/*   Updated: 2025/01/27 19:57:57 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/13 20:14:46 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,20 @@ static void	no_arg(t_shell *data)
 {
 	t_cmd	*temp_cmd;
 
-	if (!data || !data->command)
+	if (!data || !data->cmd_lst)
 		return ;
-	temp_cmd = data->command;
+	temp_cmd = data->cmd_lst;
 	while (temp_cmd && temp_cmd->cmd)
 	{
-		if (!temp_cmd->arg)
+		if (!temp_cmd->args_list)
 		{
-			temp_cmd->arg = malloc(sizeof * temp_cmd->arg * 2);
-			temp_cmd->arg[0] = ft_strdup(temp_cmd->cmd);
-			temp_cmd->arg[1] = NULL;
+			temp_cmd->args_list = malloc(sizeof * temp_cmd->args_list * 2);
+			temp_cmd->args_list[0] = ft_strdup(temp_cmd->cmd);
+			temp_cmd->args_list[1] = NULL;
 		}
 		temp_cmd = temp_cmd->next;
 	}
-	temp_cmd = last_cmd(data->command);
+	temp_cmd = last_cmd(data->cmd_lst);
 }
 
 void	parse_pipe(t_cmd **cmd, t_token **token_lst)
@@ -37,8 +37,8 @@ void	parse_pipe(t_cmd **cmd, t_token **token_lst)
 	t_cmd	*last_node;
 
 	last_node = last_cmd(*cmd);
-	last_node->pipe_out = true;
-	add_back_cmd(&last_node, new_cmd(false));
+	last_node->if_pipe = true;
+	add_cmd(&last_node, new_cmd(false));
 	*token_lst = (*token_lst)->next;
 }
 
@@ -52,19 +52,19 @@ void	handle_commands(t_shell *data, t_token *token)
 	while (temp->next != NULL)
 	{
 		if (temp == token)
-			add_back_cmd(&data->command, new_cmd(false));
+			add_cmd(&data->cmd_lst, new_cmd(false));
 		if (temp->type == WORD || temp->type == VAR)
-			parse_str(&data->command, &temp, data);
+			parse_str(&data->cmd_lst, &temp, data);
 		else if (temp->type == REDIRECT_IN)
-			parse_redir_in(&data->command, &temp);
+			parse_redir_in(&data->cmd_lst, &temp);
 		else if (temp->type == REDIRECT_OUT)
-			parse_redir_out(&data->command, &temp);
+			parse_redir_out(&data->cmd_lst, &temp);
 		else if (temp->type == HEREDOC)
-			parse_heredoc(data, &data->command, &temp);
+			parse_heredoc(data, &data->cmd_lst, &temp);
 		else if (temp->type == APPEND)
-			parse_append(&data->command, &temp);
+			parse_append(&data->cmd_lst, &temp);
 		else if (temp->type == PIPE)
-			parse_pipe(&data->command, &temp);
+			parse_pipe(&data->cmd_lst, &temp);
 		else if (temp->type == END)
 			break ;
 	}

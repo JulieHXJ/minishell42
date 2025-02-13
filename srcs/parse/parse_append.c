@@ -6,13 +6,13 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 17:52:25 by xhuang            #+#    #+#             */
-/*   Updated: 2025/01/26 18:01:25 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/13 20:19:12 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	append_outfile(t_pipe *io, char *file, char *var_filename)
+static void	append_outfile(t_redir *io, char *file, char *var_filename)
 {
 	if (!remove_old_fd(io, false))
 		return ;
@@ -35,7 +35,7 @@ void	parse_append(t_cmd **last_node, t_token **token_lst)
 	temp = *token_lst;
 	cmd = last_cmd(*last_node);
 	init_io(cmd);
-	append_outfile(cmd->pipe, temp->next->input, temp->next->input_backup);
+	append_outfile(cmd->io, temp->next->input, temp->next->input_backup);
 	if (temp->next->next)
 		temp = temp->next->next;
 	else

@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 16:20:53 by xhuang            #+#    #+#             */
-/*   Updated: 2025/01/28 17:13:58 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/13 20:57:44 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ bool	remove_envp(t_shell *mini, int idx)
 	int	i;
 	int	count;
 
-	if (idx > envp_count(mini->envp))
+	if (idx > count_env(mini->envp))
 		return (false);
 	free_ptr(mini->envp[idx]);
 	i = idx;
@@ -54,7 +54,7 @@ int	unset_builtin(t_shell *mini, char **args)
 		}
 		else
 		{
-			idx = envp_index(mini->envp, args[i]);
+			idx = get_envp_index(mini->envp, args[i]);
 			if (idx != -1)
 				remove_envp(mini, idx);
 		}

@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 18:44:09 by xhuang            #+#    #+#             */
-/*   Updated: 2025/01/18 18:49:03 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/13 20:52:09 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static char	*find_path(char *cmd, char **paths)
 		}
 		if (access(cmd_path, F_OK | X_OK) == 0)
 			return (cmd_path);
-		free_ptr(cmd_path);
+		free(cmd_path);
 		i++;
 	}
 	return (NULL);
@@ -40,9 +40,9 @@ static char	**get_envp(t_shell *data)
 {
 	char	**env_paths;
 
-	if (envp_index(data->envp, "PATH") == -1)
+	if (get_envp_index(data->envp, "PATH") == -1)
 		return (NULL);
-	env_paths = ft_split(envp_value(data->envp, "PATH"), ':');
+	env_paths = ft_split(get_envp_value("PATH", data->envp), ':');
 	if (!env_paths)
 		return (NULL);
 	return (env_paths);
@@ -62,14 +62,14 @@ char	*get_cmd_path(t_shell *data, char *name)
 	cmd = ft_strjoin("/", name);
 	if (!cmd)
 	{
-		free_array(env_paths);
+		free_arr(env_paths);
 		return (NULL);
 	}
 	cmd_path = find_path(cmd, env_paths);
 	if (!cmd_path)
 	{
-		free_ptr(cmd);
-		free_array(env_paths);
+		free(cmd);
+		free_arr(env_paths);
 		return (NULL);
 	}
 	return (cmd_path);

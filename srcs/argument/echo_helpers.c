@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 17:41:25 by xhuang            #+#    #+#             */
-/*   Updated: 2025/01/28 17:12:44 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/13 21:13:47 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	remove_empty(t_token **tokens)
 			temp = temp->next;
 			if (temp == (*tokens)->next)
 				(*tokens) = (*tokens)->next;
-			delone_tkn(temp->prev, free_ptr);
+			remove_token(temp->prev, &free_ptr);
 		}
 		else
 			temp = temp->next;

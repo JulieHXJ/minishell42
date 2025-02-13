@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 16:18:07 by xhuang            #+#    #+#             */
-/*   Updated: 2025/01/17 16:33:42 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/13 20:58:20 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	copy_var(char *str, char *value, int *j)
 	}
 }
 
-char	*new_token(char *oldstr, char *value, int newstr_size, int index)
+char	*replace_token(char *oldstr, char *value, int newstr_size, int index)
 {
 	int		i;
 	int		j;

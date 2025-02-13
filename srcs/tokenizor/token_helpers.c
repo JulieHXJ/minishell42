@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_helpers.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amesmar <amesmar@student.42.fr>            +#+  +:+       +#+        */
+/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 19:04:02 by amesmar           #+#    #+#             */
-/*   Updated: 2025/01/19 20:32:53 by amesmar          ###   ########.fr       */
+/*   Updated: 2025/02/13 20:27:14 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int	save_sep(t_token **token_lst, char *str, int index, int type)
 		while (i < 2)
 			sep[i++] = str[index++];
 		sep[i] = '\0';
-		add_back_tkn(token_lst, new_tkn(sep, NULL, type, DEFAULT));
+		add_token(token_lst, new_token(sep, NULL, type, DEFAULT));
 	}
 	else
 	{
@@ -36,7 +36,7 @@ static int	save_sep(t_token **token_lst, char *str, int index, int type)
 		while (i < 1)
 			sep[i++] = str[index++];
 		sep[i] = '\0';
-		add_back_tkn(token_lst, new_tkn(sep, NULL, type, DEFAULT));
+		add_token(token_lst, new_token(sep, NULL, type, DEFAULT));
 	}
 	return (0);
 }
@@ -57,8 +57,8 @@ static int	save_word(t_token **token_lst, char *str, int index, int start)
 		i++;
 	}
 	word[i] = '\0';
-	add_back_tkn(token_lst, \
-			new_tkn(word, ft_strdup(word), WORD, DEFAULT));
+	add_token(token_lst, \
+			new_token(word, ft_strdup(word), WORD, DEFAULT));
 	return (0);
 }
 
@@ -82,7 +82,7 @@ static int	is_sep(char *str, int i)
 		return (0);
 }
 
-int	set_status(int status, char *str, int i)
+int	set_quote_status(int status, char *str, int i)
 {
 	if (str[i] == '\'' && status == DEFAULT)
 		status = SQUOTE;
@@ -103,11 +103,11 @@ int	word_or_sep(int *i, char *str, int start, t_shell *data)
 	if (type)
 	{
 		if ((*i) != 0 && is_sep(str, (*i) - 1) == 0)
-			save_word(&data->token, str, (*i), start);
+			save_word(&data->token_lst, str, (*i), start);
 		if (type == APPEND || type == HEREDOC || type == PIPE
 			|| type == REDIRECT_IN || type == REDIRECT_OUT || type == END)
 		{
-			save_sep(&data->token, str, (*i), type);
+			save_sep(&data->token_lst, str, (*i), type);
 			if (type == APPEND || type == HEREDOC)
 				(*i)++;
 		}

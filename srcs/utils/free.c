@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:30:23 by amesmar           #+#    #+#             */
-/*   Updated: 2025/01/28 16:19:09 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/13 21:13:12 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 void	free_ptr(void *ptr)
 {
-	if (ptr != NULL)
+	if (ptr)
 	{
 		free(ptr);
 		ptr = NULL;
 	}
 }
 
-void	free_array(char **arr)
+void	free_arr(char **arr)
 {
 	int	i;
 
@@ -49,11 +49,10 @@ void	free_shell(t_shell *minishell, bool free_all)
 		free_ptr(minishell->input);
 		minishell->input = NULL;
 	}
-	/////// to do ////////
-	if (minishell && minishell->token)
-		clear_token(&minishell->token, &free_ptr);
-	if (minishell && minishell->command)
-		clear_cmd(&minishell->command, &free_ptr);
+	if (minishell && minishell->token_lst)
+		free_token(&minishell->token_lst, &free_ptr);
+	if (minishell && minishell->cmd_lst)
+		free_cmd(&minishell->cmd_lst, &free_ptr);
 	if (free_all == true)
 	{
 		if (minishell && minishell->cur_dir)
@@ -61,26 +60,26 @@ void	free_shell(t_shell *minishell, bool free_all)
 		if (minishell && minishell->old_dir)
 			free_ptr(minishell->old_dir);
 		if (minishell && minishell->envp)
-			free_array(minishell->envp);
+			free_arr(minishell->envp);
 		rl_clear_history();
 	}
 }
 
 void	close_fds(t_cmd *cmds, bool close_backups)
 {
-	if (cmds->pipe)
+	if (cmds->io)
 	{
-		if (cmds->pipe->fd_in != -1)
-			close(cmds->pipe->fd_in);
-		if (cmds->pipe->fd_out != -1)
-			close(cmds->pipe->fd_out);
+		if (cmds->io->fd_in != -1)
+			close(cmds->io->fd_in);
+		if (cmds->io->fd_out != -1)
+			close(cmds->io->fd_out);
 		if (close_backups)
-			restore_io(cmds->pipe);
+			restore_io(cmds->io);
 	}
 	close_pipe_fds(cmds, NULL);
 }
 
-void	free_io(t_pipe *io)
+void	free_io(t_redir *io)
 {
 	if (!io)
 		return ;

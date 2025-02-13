@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 18:50:52 by amesmar           #+#    #+#             */
-/*   Updated: 2025/02/05 18:56:39 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/13 20:12:17 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,11 +73,11 @@ static int	get_exit_code(char *arg, bool *error)
 	return (i % 256);
 }
 
-static bool	not_piped(t_shell *data)
+static bool	no_pipe(t_shell *data)
 {
 	t_cmd	*cmd;
 
-	cmd = data->command;
+	cmd = data->cmd_lst;
 	if (!cmd)
 		return (false);
 	if (cmd->next != NULL || cmd->prev != NULL)
@@ -91,7 +91,7 @@ int	exit_builtin(t_shell *data, char **args)
 	bool	error;
 	bool	quiet;
 
-	quiet = not_piped(data);
+	quiet = no_pipe(data);
 	error = false;
 	if (!quiet)
 		ft_putendl_fd("exit", 2);

@@ -6,13 +6,13 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:29:17 by amesmar           #+#    #+#             */
-/*   Updated: 2025/01/28 16:35:00 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/13 20:58:13 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	envp_count(char **env)
+int	count_env(char **env)
 {
 	int	i;
 
@@ -22,7 +22,7 @@ int	envp_count(char **env)
 	return (i);
 }
 
-int	envp_index(char **env, char *var)
+int get_envp_index(char **env, char *var)
 {
 	int		i;
 	char	*tmp;
@@ -35,34 +35,36 @@ int	envp_index(char **env, char *var)
 	{
 		if (ft_strncmp(tmp, env[i], ft_strlen(tmp)) == 0)
 		{
-			free_ptr(tmp);
+			free(tmp);
 			return (i);
 		}
 		i++;
 	}
-	free_ptr(tmp);
+	free(tmp);
 	return (-1);
 }
 
-char	*envp_value(char **env, char *var)
+char	*get_envp_value(char *str, char **envp)
 {
 	int		i;
-	char	*tmp;
+	int		len;
+	char	*temp;
 
-	tmp = ft_strjoin(var, "=");
-	if (!tmp)
+	if (!str || !envp)
 		return (NULL);
+	len = ft_strlen(str);
 	i = 0;
-	while (env[i])
+	while (envp[i])
 	{
-		if (ft_strncmp(tmp, env[i], ft_strlen(tmp)) == 0)
+		if (ft_strncmp(envp[i], str, len) == 0 && envp[i][len] == '=')
 		{
-			free_ptr(tmp);
-			return (ft_strchr(env[i], '=') + 1);
+			temp = ft_strdup(envp[i] + len + 1);
+			if (!temp)
+				return (NULL);
+			return (temp);
 		}
 		i++;
 	}
-	free_ptr(tmp);
 	return (NULL);
 }
 
@@ -85,12 +87,12 @@ char	**realloc_env_vars(t_shell *data, int size)
 	return (new_env);
 }
 
-bool	set_env_var(t_shell *data, char *key, char *value)
+bool	set_envp_var(t_shell *data, char *key, char *value)
 {
 	int		idx;
 	char	*tmp;
 
-	idx = envp_index(data->envp, key);
+	idx = get_envp_index(data->envp, key);
 	if (value == NULL)
 		value = "";
 	tmp = ft_strjoin("=", value);
@@ -103,7 +105,7 @@ bool	set_env_var(t_shell *data, char *key, char *value)
 	}
 	else
 	{
-		idx = envp_count(data->envp);
+		idx = count_env(data->envp);
 		data->envp = realloc_env_vars(data, idx + 1);
 		if (!data->envp)
 			return (false);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_args.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amesmar <amesmar@student.42.fr>            +#+  +:+       +#+        */
+/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 17:26:14 by xhuang            #+#    #+#             */
-/*   Updated: 2025/01/19 19:48:18 by amesmar          ###   ########.fr       */
+/*   Updated: 2025/02/13 20:03:28 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,20 +34,20 @@ static int	create_args(t_token **token_node, t_cmd *last_cmd)
 	i = 0;
 	temp = *token_node;
 	nb = count_args(temp);
-	last_cmd->arg = malloc(sizeof(char *) * (nb + 2));
-	if (!last_cmd->arg)
+	last_cmd->args_list = malloc(sizeof(char *) * (nb + 2));
+	if (!last_cmd->args_list)
 		return (1);
 	temp = *token_node;
 	i = 0;
-	last_cmd->arg[i] = ft_strdup(last_cmd->cmd);
+	last_cmd->args_list[i] = ft_strdup(last_cmd->cmd);
 	i++;
 	while (temp->type == WORD || temp->type == VAR)
 	{
-		last_cmd->arg[i] = ft_strdup(temp->input);
+		last_cmd->args_list[i] = ft_strdup(temp->input);
 		i++;
 		temp = temp->next;
 	}
-	last_cmd->arg[i] = NULL;
+	last_cmd->args_list[i] = NULL;
 	*token_node = temp;
 	return (0);
 }
@@ -61,7 +61,7 @@ static char	**copy_args(int len, char **arr, t_cmd *comd, t_token **node)
 	temp = *node;
 	while (i < len)
 	{
-		arr[i] = comd->arg[i];
+		arr[i] = comd->args_list[i];
 		i++;
 	}
 	while (temp->type == WORD || temp->type == VAR)
@@ -89,14 +89,14 @@ static int	add_args(t_token **token_node, t_cmd *last_cmd)
 		temp = temp->next;
 	}
 	len = 0;
-	while (last_cmd->arg[len])
+	while (last_cmd->args_list[len])
 		len++;
 	new_tab = malloc(sizeof(char *) * (i + len + 1));
 	if (!new_tab)
 		return (1);
 	new_tab = copy_args(len, new_tab, last_cmd, token_node);
-	free(last_cmd->arg);
-	last_cmd->arg = new_tab;
+	free(last_cmd->args_list);
+	last_cmd->args_list = new_tab;
 	*token_node = temp;
 	return (0);
 }
@@ -105,14 +105,14 @@ int	handle_args(t_token **token_node, t_cmd *last_cmd)
 {
 	if (!ft_strcmp(last_cmd->cmd, "echo"))
 	{
-		if (!(last_cmd->arg))
+		if (!(last_cmd->args_list))
 			return (create_args_echo(token_node, last_cmd));
 		else
 			return (add_args_echo(token_node, last_cmd));
 	}
 	else
 	{
-		if (last_cmd && !(last_cmd->arg))
+		if (last_cmd && !(last_cmd->args_list))
 			return (create_args(token_node, last_cmd));
 		else
 			return (add_args(token_node, last_cmd));

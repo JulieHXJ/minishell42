@@ -6,14 +6,14 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:48:53 by amesmar           #+#    #+#             */
-/*   Updated: 2025/01/26 16:00:56 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/13 20:26:28 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 
-bool	restore_io(t_pipe *io)
+bool	restore_io(t_redir *io)
 {
 	int	ret;
 
@@ -38,7 +38,7 @@ bool	restore_io(t_pipe *io)
 }
 
 
-bool	check_infile_outfile(t_pipe *io)
+bool	check_infile_outfile(t_redir *io)
 {
 	if (!io || (!io->infile && !io->outfile))
 		return (true);
@@ -62,7 +62,7 @@ void	close_pipe_fds(t_cmd *cmds, t_cmd *skip_cmd)
 	}
 }
 
-bool	re_pipe(t_pipe *io)
+bool	re_pipe(t_redir *io)
 {
 	int	ret;
 
@@ -88,9 +88,9 @@ bool	re_pipe(t_pipe *io)
 {
 	if (!c)
 		return (false);
-	if (c->prev && c->prev->pipe_out)
+	if (c->prev && c->prev->if_pipe)
 		dup2(c->prev->pipe_fd[0], STDIN_FILENO);
-	if (c->pipe_out)
+	if (c->if_pipe)
 		dup2(c->pipe_fd[1], STDOUT_FILENO);
 	close_pipe_fds(cmds, c);
 	return (true);

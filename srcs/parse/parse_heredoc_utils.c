@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 16:39:10 by xhuang            #+#    #+#             */
-/*   Updated: 2025/01/26 17:16:23 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/13 20:59:01 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,16 @@ static char	*arr_to_str(char **arr)
 		else
 		{
 			str = ft_strjoin(tmp, arr[i]);
-			free_ptr(tmp);
+			free(tmp);
 		}
 		if (arr[i + 1])
 		{
 			tmp = str;
 			str = ft_strjoin(tmp, " ");
-			free_ptr(tmp);
+			free(tmp);
 		}
 	}
-	free_array(arr);
+	free_arr(arr);
 	return (str);
 }
 
@@ -62,7 +62,7 @@ static char	*expand_line(t_shell *data, char *line)
 	return (arr_to_str(words));
 }
 
-static bool	not_delim(t_shell *data, char **line, t_pipe *io, bool *ret)
+static bool	not_delim(t_shell *data, char **line, t_redir *io, bool *ret)
 {
 	if (*line == NULL)
 	{
@@ -89,7 +89,7 @@ static bool	not_delim(t_shell *data, char **line, t_pipe *io, bool *ret)
 	return (true);
 }
 
-bool	fill_heredoc(t_shell *data, t_pipe *io, int fd)
+bool	fill_heredoc(t_shell *data, t_redir *io, int fd)
 {
 	char	*line;
 	bool	ret;
@@ -98,9 +98,9 @@ bool	fill_heredoc(t_shell *data, t_pipe *io, int fd)
 	line = NULL;
 	while (1)
 	{
-		set_signals();
+		preset_signals();
 		line = readline(">");
-		set_signals_noninteractive();
+		signals_during_exec();
 		if (!not_delim(data, &line, io, &ret))
 			break ;
 		ft_putendl_fd(line, fd);

@@ -6,13 +6,13 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 19:05:03 by amesmar           #+#    #+#             */
-/*   Updated: 2025/01/18 18:04:08 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/13 21:09:28 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_token	*new_tkn(char *str, char *str_backup, int type, int status)
+t_token	*new_token(char *str, char *str_backup, int type, int status)
 {
 	t_token	*new_node;
 
@@ -30,7 +30,7 @@ t_token	*new_tkn(char *str, char *str_backup, int type, int status)
 	return (new_node);
 }
 
-void	add_back_tkn(t_token **alst, t_token *new_node)
+void	add_token(t_token **alst, t_token *new_node)
 {
 	t_token	*start;
 
@@ -49,16 +49,16 @@ void	add_back_tkn(t_token **alst, t_token *new_node)
 	}
 }
 
-void	delone_tkn(t_token *lst, void (*del)(void *))
+void	remove_token(t_token *lst, void (*del)(void *))
 {
 	if (del && lst && lst->input)
 	{
-		(*del)(lst->input);
+		free_ptr(lst->input);
 		lst->input = NULL;
 	}
 	if (del && lst && lst->input_backup)
 	{
-		(*del)(lst->input_backup);
+		free_ptr(lst->input_backup);
 		lst->input_backup = NULL;
 	}
 	if (lst->prev)
@@ -68,7 +68,7 @@ void	delone_tkn(t_token *lst, void (*del)(void *))
 	free_ptr(lst);
 }
 
-void	clear_tkn(t_token **lst, void (*del)(void *))
+void	free_token(t_token **lst, void (*del)(void *))
 {
 	t_token	*tmp;
 
@@ -76,12 +76,12 @@ void	clear_tkn(t_token **lst, void (*del)(void *))
 	while (*lst != NULL)
 	{
 		tmp = (*lst)->next;
-		delone_tkn(*lst, del);
+		remove_token(*lst, del);
 		*lst = tmp;
 	}
 }
 
-t_token	*insert_tkn(t_token **head, t_token *to_del, t_token *insert)
+t_token	*insert_token(t_token **head, t_token *to_del, t_token *insert)
 {
 	t_token	*temp;
 

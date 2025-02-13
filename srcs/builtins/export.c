@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 14:26:06 by xhuang            #+#    #+#             */
-/*   Updated: 2025/01/28 16:57:21 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/13 20:13:05 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,8 @@ int	export_builtin(t_shell *data, char **args)
 		else if (ft_strchr(args[i], '=') != NULL)
 		{
 			tmp = get_key_value(args[i]);
-			set_env_var(data, tmp[0], tmp[1]);
-			free_array(tmp);
+			set_envp_var(data, tmp[0], tmp[1]);
+			free_arr(tmp);
 		}
 		i++;
 	}

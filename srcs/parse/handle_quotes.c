@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:32:39 by xhuang            #+#    #+#             */
-/*   Updated: 2025/01/17 18:07:55 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/13 20:00:01 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	handle_quotes(t_shell *data)
 {
 	t_token	*temp;
 
-	temp = data->token;
+	temp = data->token_lst;
 	while (temp)
 	{
 		if (quotes_found(temp->input) == true

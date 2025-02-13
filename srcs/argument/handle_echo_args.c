@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 17:38:41 by xhuang            #+#    #+#             */
-/*   Updated: 2025/01/18 17:50:02 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/13 20:04:09 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static char	**copy_tab(int len, char **new_tab,
 	i = 0;
 	while (i < len)
 	{
-		new_tab[i] = last_cmd->arg[i];
+		new_tab[i] = last_cmd->args_list[i];
 		i++;
 	}
 	while (tmp->type == WORD || tmp->type == VAR)
@@ -84,22 +84,22 @@ int	create_args_echo(t_token **token_node, t_cmd *last_cmd)
 	remove_empty(token_node);
 	temp = *token_node;
 	nb_args = count_args(temp);
-	last_cmd->arg = malloc(sizeof(char *) * (nb_args + 2));
-	if (!last_cmd->arg)
+	last_cmd->args_list = malloc(sizeof(char *) * (nb_args + 2));
+	if (!last_cmd->args_list)
 		return (1);
 	i = 0;
-	last_cmd->arg[i] = ft_strdup(last_cmd->cmd);
+	last_cmd->args_list[i] = ft_strdup(last_cmd->cmd);
 	i++;
 	while (temp->type == WORD || temp->type == VAR)
 	{
 		if (temp->joined == true)
-			last_cmd->arg[i] = str_join(&temp);
+			last_cmd->args_list[i] = str_join(&temp);
 		else
-			last_cmd->arg[i] = ft_strdup(temp->input);
+			last_cmd->args_list[i] = ft_strdup(temp->input);
 		i++;
 		temp = temp->next;
 	}
-	last_cmd->arg[i] = NULL;
+	last_cmd->args_list[i] = NULL;
 	*token_node = temp;
 	return (0);
 }
@@ -115,14 +115,14 @@ int	add_args_echo(t_token **token_node, t_cmd *last_cmd)
 	temp = *token_node;
 	nb_args = count_args(temp);
 	len = 0;
-	while (last_cmd->arg[len])
+	while (last_cmd->args_list[len])
 		len++;
 	new_tab = malloc(sizeof(char *) * (nb_args + len + 1));
 	if (!new_tab)
 		return (1);
 	new_tab = copy_tab(len, new_tab, last_cmd, temp);
-	free(last_cmd->arg);
-	last_cmd->arg = new_tab;
+	free(last_cmd->args_list);
+	last_cmd->args_list = new_tab;
 	while (temp->type == WORD || temp->type == VAR)
 		temp = temp->next;
 	*token_node = temp;

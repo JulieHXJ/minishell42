@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 16:28:55 by xhuang            #+#    #+#             */
-/*   Updated: 2025/01/17 16:35:09 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/13 20:50:43 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,6 @@ char	*retrieve_var(t_token *token, char *str, t_shell *data)
 		value = ft_itoa(global_exit_code);
 	else
 		value = NULL;
-	free_ptr(var);
+	free(var);
 	return (value);
 }

@@ -1,31 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokens.c                                           :+:      :+:    :+:   */
+/*   tokenize_input.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amesmar <amesmar@student.42.fr>            +#+  +:+       +#+        */
+/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 19:03:15 by amesmar           #+#    #+#             */
-/*   Updated: 2025/01/19 20:29:56 by amesmar          ###   ########.fr       */
+/*   Updated: 2025/02/13 19:21:17 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	tokenization(t_shell *data, char *str)
+/**
+ * 
+ */
+int	tokenize(t_shell *data, char *str)
 {
 	int	i;
-	int	end;
+	int	len;
 	int	start;
 	int	status;
 
 	i = -1;
 	start = 0;
-	end = ft_strlen(str);
+	len = ft_strlen(str);
 	status = DEFAULT;
-	while (++i <= end)
+	while (++i <= len)
 	{
-		status = set_status(status, str, i);
+		status = set_quote_status(status, str, i);
 		if (status == DEFAULT)
 			start = word_or_sep(&i, str, start, data);
 	}
@@ -40,4 +43,3 @@ int	tokenization(t_shell *data, char *str)
 	}
 	return (0);
 }
-

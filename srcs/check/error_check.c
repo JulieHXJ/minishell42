@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:25:25 by amesmar           #+#    #+#             */
-/*   Updated: 2025/01/28 16:50:51 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/13 20:48:39 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*join_strs(char *str, char *add)
 		return (ft_strdup(add));
 	tmp = str;
 	str = ft_strjoin(tmp, add);
-	free_ptr(tmp);
+	free(tmp);
 	return (str);
 }
 
@@ -57,7 +57,7 @@ int	errmsg_cmd(char *command, char *detail, char *error_message, int error_nb)
 	}
 	msg = join_strs(msg, error_message);
 	ft_putendl_fd(msg, STDERR_FILENO);
-	free_ptr(msg);
+	free(msg);
 	return (error_nb);
 }
 
@@ -75,12 +75,12 @@ void	errmsg(char *errmsg, char *detail, int quotes)
 	if (quotes)
 		msg = join_strs(msg, "'");
 	ft_putendl_fd(msg, STDERR_FILENO);
-	free_ptr(msg);
+	free(msg);
 }
 
-bool	usage_message(bool return_val)
-{
-	ft_putendl_fd("Usage: ./minishell", 2);
-	ft_putendl_fd("Usage: ./minishell -c \"input line\"", 2);
-	return (return_val);
-}
+// bool	usage_message(bool return_val)
+// {
+// 	ft_putendl_fd("Usage: ./minishell", 2);
+// 	ft_putendl_fd("Usage: ./minishell -c \"input line\"", 2);
+// 	return (return_val);
+// }

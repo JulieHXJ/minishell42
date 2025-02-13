@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 16:12:00 by xhuang            #+#    #+#             */
-/*   Updated: 2025/01/26 16:52:48 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/13 20:58:39 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static char	*delete_and_replace(t_token **token_node, char *str,
 
 	newstr_size = (ft_strlen(str) - var_length(str + n)
 			+ ft_strlen(var_value));
-	newstr = new_token(str, var_value, newstr_size, n);
+	newstr = replace_token(str, var_value, newstr_size, n);
 	if (token_node && *token_node)
 	{
 		free_ptr((*token_node)->input);

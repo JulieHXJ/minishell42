@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 15:41:16 by amesmar           #+#    #+#             */
-/*   Updated: 2025/01/26 14:17:58 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/13 21:00:48 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static void	update_wds(t_shell *data, char *wd)
 {
-	set_env_var(data, "OLDPWD", envp_value(data->envp, "PWD"));
-	set_env_var(data, "PWD", wd);
+	set_envp_var(data, "OLDPWD", get_envp_value("PWD", data->envp));
+	set_envp_var(data, "PWD", wd);
 	if (data->old_dir)
 	{
 		free_ptr(data->old_dir);
@@ -70,7 +70,7 @@ int	cd_builtin(t_shell *data, char **args)
 	if (!args || !args[1] || ft_isspace(args[1][0])
 		|| args[1][0] == '\0' || ft_strncmp(args[1], "--", 3) == 0)
 	{
-		path = envp_value(data->envp, "HOME");
+		path = get_envp_value("HOME", data->envp);
 		if (!path || *path == '\0' || ft_isspace(*path))
 			return (errmsg_cmd("cd", NULL, "HOME not set", EXIT_FAILURE));
 		return (!change_dir(data, path));
@@ -79,7 +79,7 @@ int	cd_builtin(t_shell *data, char **args)
 		return (errmsg_cmd("cd", NULL, "too many arguments", EXIT_FAILURE));
 	if (ft_strncmp(args[1], "-", 2) == 0)
 	{
-		path = envp_value(data->envp, "OLDPWD");
+		path = get_envp_value("OLDPWD", data->envp);
 		if (!path)
 			return (errmsg_cmd("cd", NULL, "OLDPWD not set", EXIT_FAILURE));
 		return (!change_dir(data, path));

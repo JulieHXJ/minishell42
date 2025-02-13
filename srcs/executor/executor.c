@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 18:16:11 by xhuang            #+#    #+#             */
-/*   Updated: 2025/01/28 16:16:58 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/13 20:17:13 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@ int	execute_command(t_shell *data, t_cmd *cmd)
 	if (!cmd || !cmd->cmd)
 		terminate_shell(data, errmsg_cmd("child", NULL,
 				"parsing error: no command to execute!", EXIT_FAILURE));
-	if (!check_infile_outfile(cmd->pipe))
+	if (!check_infile_outfile(cmd->io))
 		terminate_shell(data, EXIT_FAILURE);
-	set_pipe_fds(data->command, cmd);
-	re_pipe(cmd->pipe);
-	close_fds(data->command, false);
+	set_pipe_fds(data->cmd_lst, cmd);
+	re_pipe(cmd->io);
+	close_fds(data->cmd_lst, false);
 	if (ft_strchr(cmd->cmd, '/') == NULL)
 	{
 		ret = execute_builtin(data, cmd);
@@ -46,7 +46,7 @@ static int	get_children(t_shell *data)
 	int		status;
 	int		save_status;
 
-	close_fds(data->command, false);
+	close_fds(data->cmd_lst, false);
 	save_status = 0;
 	wpid = 0;
 	while (wpid != -1 || errno != ECHILD)
@@ -69,7 +69,7 @@ static int	create_children(t_shell *data)
 {
 	t_cmd	*cmd;
 
-	cmd = data->command;
+	cmd = data->cmd_lst;
 	while (data->pid != 0 && cmd)
 	{
 		data->pid = fork();
@@ -84,11 +84,11 @@ static int	create_children(t_shell *data)
 
 static int	prep_for_exec(t_shell *data)
 {
-	if (!data || !data->command)
+	if (!data || !data->cmd_lst)
 		return (EXIT_SUCCESS);
-	if (!data->command->cmd)
+	if (!data->cmd_lst->cmd)
 	{
-		if (data->command->pipe && !check_infile_outfile(data->command->pipe))
+		if (data->cmd_lst->io && !check_infile_outfile(data->cmd_lst->io))
 			return (EXIT_FAILURE);
 		return (EXIT_SUCCESS);
 	}
@@ -97,22 +97,21 @@ static int	prep_for_exec(t_shell *data)
 	return (127);
 }
 
-int	execute(t_shell *data, char **argv)
+int	execute(t_shell *data)
 {
 	int		ret;
 	t_cmd	*cmd;
 
-	(void)argv;
-	cmd = data->command;
+	cmd = data->cmd_lst;
 	ret = prep_for_exec(data);
 	if (ret != 127)
 		return (ret);
-	if (!data->command->pipe_out && !data->command->prev
-		&& check_infile_outfile(data->command->pipe))
+	if (!data->cmd_lst->if_pipe && !data->cmd_lst->prev
+		&& check_infile_outfile(data->cmd_lst->io))
 	{
-		re_pipe(data->command->pipe);
-		ret = execute_builtin(data, data->command);
-		restore_io(data->command->pipe);
+		re_pipe(data->cmd_lst->io);
+		ret = execute_builtin(data, data->cmd_lst);
+		restore_io(data->cmd_lst->io);
 	}
 	if (ret != 127)
 		return (ret);
