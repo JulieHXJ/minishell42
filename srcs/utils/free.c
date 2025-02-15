@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:30:23 by amesmar           #+#    #+#             */
-/*   Updated: 2025/02/13 21:13:12 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/13 21:39:50 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ void	free_shell(t_shell *minishell, bool free_all)
 	if (minishell && minishell->input)
 	{
 		free_ptr(minishell->input);
-		minishell->input = NULL;
 	}
 	if (minishell && minishell->token_lst)
 		free_token(&minishell->token_lst, &free_ptr);

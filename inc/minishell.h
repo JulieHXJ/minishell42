@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 16:53:04 by xhuang            #+#    #+#             */
-/*   Updated: 2025/02/13 21:13:28 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/15 17:35:57 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ typedef struct s_shell
 
 // init
 bool	init_shell(t_shell *mini, char **envp);
+void	handle_shlvl(t_shell *mini);
 
 // signal
 void	preset_signals(void);

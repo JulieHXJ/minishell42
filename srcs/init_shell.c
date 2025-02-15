@@ -6,99 +6,95 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:18:36 by amesmar           #+#    #+#             */
-/*   Updated: 2025/02/13 20:17:30 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/15 20:35:13 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// static bool	init_envp(t_shell *data, char **envp)
-// {
-// 	int		i;
-
-// 	data->envp = ft_calloc(envp_count(envp) + 1, sizeof * data->envp);
-// 	if (!data->envp)
-// 		return (false);
-// 	i = 0;
-// 	while (envp[i])
-// 	{
-// 		data->envp[i] = ft_strdup(envp[i]);
-// 		if (!data->envp[i])
-// 			return (false);
-// 		i++;
-// 	}
-// 	return (true);
-// }
-
-// static bool	init_dir(t_shell *data)
-// {
-// 	char	buff[PATH_MAX];
-// 	char	*dir;
-
-// 	dir = getcwd(buff, PATH_MAX);
-// 	data->cur_dir = ft_strdup(dir);
-// 	if (!data->cur_dir)
-// 		return (false);
-// 	if (envp_index(data->envp, "OLDPWD") != -1)
-// 	{
-// 		data->old_dir = ft_strdup(envp_value(data->envp, "OLDPWD"));
-// 		if (!data->old_dir)
-// 			return (false);
-// 	}
-// 	else
-// 	{
-// 		data->old_dir = ft_strdup(dir);
-// 		if (!data->old_dir)
-// 			return (false);
-// 	}
-// 	return (true);
-// }
-
-// bool	init_shell(t_shell *data, char **envp)
-// {
-// 	if (!init_envp(data, envp))
-// 	{
-// 		ft_printf("Could not initialize envp\n");
-// 		return (false);
-// 	}
-// 	if (!init_dir(data))
-// 	{
-// 		ft_printf("Could not initialize current working directory\n");
-// 		return (false);
-// 	}
-// 	data->token = NULL;
-// 	data->input = NULL;
-// 	data->command = NULL;
-// 	data->pid = -1;
-// 	global_exit_code = 0;
-// 	return (true);
-// }
-
-static void	init_envp(t_shell *mini, char **envp)
+// !!!!if no envp(env -i ./minishell), PWD and SHLVL should be default
+void	set_default_envp(t_shell *mini)
 {
-	int	i;
+	char	buffer[PATH_MAX];
+	char	*dir;
 
-	i = 0;
-	while (envp[i])
-		i++;
-	mini->envp = malloc((i + 1) * sizeof(char *));
+	mini->envp = malloc(3 * sizeof(char *));
 	if (!mini->envp)
 	{
 		perror("envp allocate failed");
 		exit(EXIT_FAILURE);
 	}
-	i = 0;
-	while (envp[i])
+	dir = getcwd(buffer, PATH_MAX);
+	mini->envp[0] = ft_strjoin("PWD=", dir);
+	if (!mini->envp[0])
 	{
-		mini->envp[i] = ft_strdup(envp[i]);
-		if (!mini->envp[i])
+		perror("PWD allocation failed");
+		exit(EXIT_FAILURE);
+	}
+	mini->envp[1] = ft_strdup("SHLVL=1");
+	if (!mini->envp[1])
+	{
+		perror("SHLVL allocation failed");
+		exit(EXIT_FAILURE);
+	}
+	mini->envp[2] = NULL;
+}
+
+// !!!!!!if SHLVL exsit, it should start from value + 1 and no greater than 999
+// !!!!!!if SHLVL not exsit, add to envp from one
+void	handle_shlvl(t_shell *mini)
+{
+	char	*shlvl_value;
+	int		level;
+	char	*shlvl_new;
+
+	shlvl_value = get_envp_value("SHLVL", mini->envp);
+	if (!shlvl_value)
+	{
+		shlvl_new = ft_itoa(1);
+		if (!shlvl_new)
+			return ;
+		set_envp_var(mini, "SHLVL", shlvl_new);
+		free(shlvl_new);
+		return ;
+	}
+	level = ft_atoi(shlvl_value) + 1;
+	free(shlvl_value);
+	if (level >= 1000 || level < 0)
+		level = 0;
+	shlvl_new = ft_itoa(level);
+	if (!shlvl_new)
+		return ;
+	set_envp_var(mini, "SHLVL", shlvl_new);
+	free(shlvl_new);
+}
+
+static void	init_envp(t_shell *mini, char **envp)
+{
+	int	i;
+
+	if (!envp || !envp[0])
+	{
+		set_default_envp(mini);
+		return ;
+	}
+	i = count_env(envp);
+	mini->envp = malloc((i + 1) * sizeof(char *));
+	if (!mini->envp)
+		exit(EXIT_FAILURE);
+	if (i != 0)
+	{
+		i = 0;
+		while (envp[i])
 		{
-			perror("envp duplicate failed");
-			exit(EXIT_FAILURE);
+			mini->envp[i] = ft_strdup(envp[i]);
+			if (!mini->envp[i])
+				exit(EXIT_FAILURE);
+			i++;
 		}
-		i++;
 	}
 	mini->envp[i] = NULL;
+	handle_shlvl(mini);
 }
 
 /**

@@ -6,19 +6,13 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 16:53:00 by xhuang            #+#    #+#             */
-/*   Updated: 2025/02/13 21:06:18 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/15 20:34:51 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int global_exit_code = 0;
-
-// void set_exit_code(int code)
-// {
-//     global_exit_code = code;  // Modify the global variable
-// }
-
+int			global_exit_code = 0;
 
 static bool	only_space(char *input)
 {
@@ -34,15 +28,17 @@ static bool	only_space(char *input)
 	return (true);
 }
 
+//!!!!!!!moved the condition of only_space after add_history, which need to be added into history
 static bool	parse_input(t_shell *data)
 {
 	if (data->input == NULL)
-		exit_builtin(data, NULL);
+		exit_builtin(data, NULL);//problem here: exit_code is not 0
+		// return (true);
 	else if (ft_strcmp(data->input, "\0") == 0)
-		return (false);
-	else if (only_space(data->input))
-		return (true);
+		return (ft_printf("command not found\n"), false);
 	add_history(data->input);
+	if (only_space(data->input))
+		return (true);
 	if (tokenize(data, data->input) == 1)
 		return (false);
 	if (data->token_lst->type == END)
@@ -54,28 +50,18 @@ static bool	parse_input(t_shell *data)
 	handle_commands(data, data->token_lst);
 	return (true);
 }
-// void	reset_shell(t_shell *mini)
-// {
-// 	preset_signals();
-// 	if (!mini)
-// 		return ;
-// 	printf("Shell struct address: %p\n", (void*)mini);
-//     if (mini->input)
-//     {
-//         printf("Freeing input at %p\n", (void*)mini->input);
-//         free(mini->input);
-//     }
-//     if (mini->token_lst)
-//     {
-//         printf("Freeing token_lst at %p\n", (void*)mini->token_lst);
-//         free_token(&mini->token_lst);
-//     }
-//     if (mini->cmd_lst)
-//     {
-//         printf("Freeing cmd_lst at %p\n", (void*)mini->cmd_lst);
-//         free_cmd(&mini->cmd_lst);
-//     }
-// }
+
+void	reset_shell(t_shell *mini)
+{
+	if (!mini)
+		return ;
+	if (mini->input)
+		free_ptr(mini->input);
+	if (mini->token_lst)
+		free_token(&mini->token_lst, &free_ptr);
+	if (mini->cmd_lst)
+		free_cmd(&mini->cmd_lst, &free_ptr);
+}
 
 void	terminate_shell(t_shell *minishell, int exit_code)
 {
@@ -104,20 +90,14 @@ int	main(int argc, char **argv, char **envp)
 		minishell.input = readline(PROMPT);
 		signals_during_exec();
 		if (!minishell.input)
-		{
-			ft_printf("EOF\n");
-            break ;
-		}
+			break ;
+		if (ft_strcmp(minishell.input, "./minishell") == 0)
+			handle_shlvl(&minishell);//if input is "./minishell", SHLVL should grow
 		if (parse_input(&minishell))
 			global_exit_code = execute(&minishell);
 		else
-		{
 			global_exit_code = 1;
-			ft_printf("parsing failed\n");
-			
-		}
-		// reset_shell(&minishell);
-		free_shell(&minishell, false);
+		reset_shell(&minishell);
 	}
 	terminate_shell(&minishell, global_exit_code);
 	return (0);

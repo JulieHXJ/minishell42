@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 14:26:06 by xhuang            #+#    #+#             */
-/*   Updated: 2025/02/13 20:13:05 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/15 20:34:28 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ int	export_builtin(t_shell *data, char **args)
 	int		i;
 	char	**tmp;
 	int		ret;
+	// int		level;
+	// char	*shlvl_new;
 
 	ret = 0;
 	i = 1;

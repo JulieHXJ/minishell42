@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 15:56:45 by xhuang            #+#    #+#             */
-/*   Updated: 2025/02/13 15:32:34 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/15 14:27:22 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,15 +43,12 @@ static bool	between_quotes(char *s, int i)
 	}
 	return (false);
 }
-/*
 
+/*
 Example: Transitioning into or out of quoted states.
 is_next_char_a_sep: 
-
 var_between_quotes: 
-
 recover_val: Retrieves the value of the variable from the environment or shell data structure.
-
 replace_var: Replaces the $VAR in the token with the expanded value.
 */
 int	var_expander(t_shell *data, t_token **token_lst)

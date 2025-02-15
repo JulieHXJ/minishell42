@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 16:45:24 by xhuang            #+#    #+#             */
-/*   Updated: 2025/02/13 21:12:14 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/15 14:26:43 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,7 @@ void	add_cmd(t_cmd **cmd_lst, t_cmd *new_node)
 t_cmd	*last_cmd(t_cmd *cmd)
 {
 	while (cmd->next != NULL)
-	{
-		// printf("CMD IS NOT NULL\n");
 		cmd = cmd->next;
-	}
 	return (cmd);
 }
 
