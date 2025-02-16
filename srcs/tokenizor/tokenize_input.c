@@ -6,16 +6,13 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 19:03:15 by amesmar           #+#    #+#             */
-/*   Updated: 2025/02/13 19:21:17 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/16 17:19:59 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/**
- * 
- */
-int	tokenize(t_shell *data, char *str)
+int	tokenizor(t_shell *data, char *str)
 {
 	int	i;
 	int	len;
@@ -42,4 +39,25 @@ int	tokenize(t_shell *data, char *str)
 		return (1);
 	}
 	return (0);
+}
+
+//list helper function
+void	remove_empty(t_token **tokens)
+{
+	t_token	*temp;
+
+	temp = *tokens;
+	while (temp->type == WORD || temp->type == VAR)
+	{
+		if (temp->type == VAR && temp->input[0] == '\0'
+			&& temp->var_check == false)
+		{
+			temp = temp->next;
+			if (temp == (*tokens)->next)
+				(*tokens) = (*tokens)->next;
+			remove_token(temp->prev, &free_ptr);
+		}
+		else
+			temp = temp->next;
+	}
 }

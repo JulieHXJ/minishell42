@@ -6,13 +6,13 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 16:53:00 by xhuang            #+#    #+#             */
-/*   Updated: 2025/02/15 20:34:51 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/16 17:59:50 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int			global_exit_code = 0;
+int			g_exit_code = 0;
 
 static bool	only_space(char *input)
 {
@@ -28,26 +28,25 @@ static bool	only_space(char *input)
 	return (true);
 }
 
-//!!!!!!!moved the condition of only_space after add_history, which need to be added into history
+//!!!!!!!handled empty input
 static bool	parse_input(t_shell *data)
 {
 	if (data->input == NULL)
-		exit_builtin(data, NULL);//problem here: exit_code is not 0
-		// return (true);
-	else if (ft_strcmp(data->input, "\0") == 0)
-		return (ft_printf("command not found\n"), false);
+		exit_builtin(data, NULL);//ctrl+D
+	else if (!*data->input)
+		return (true);//empty input(just enter)
 	add_history(data->input);
 	if (only_space(data->input))
 		return (true);
-	if (tokenize(data, data->input) == 1)
+	if (tokenizor(data, data->input) == 1)
 		return (false);
 	if (data->token_lst->type == END)
 		return (false);
-	if (check_if_var(&data->token_lst) == 1)
+	if (check_variable(&data->token_lst) == 1)
 		return (false);
-	var_expander(data, &data->token_lst);
+	expander(data, &data->token_lst);
 	handle_quotes(data);
-	handle_commands(data, data->token_lst);
+	parse_all_type(data, data->token_lst);
 	return (true);
 }
 
@@ -69,7 +68,7 @@ void	terminate_shell(t_shell *minishell, int exit_code)
 	{
 		if (minishell->cmd_lst && minishell->cmd_lst->io)
 			close_fds(minishell->cmd_lst, true);
-		free_shell(minishell, true);
+		free_shell(minishell);
 	}
 	exit(exit_code);
 }
@@ -94,11 +93,11 @@ int	main(int argc, char **argv, char **envp)
 		if (ft_strcmp(minishell.input, "./minishell") == 0)
 			handle_shlvl(&minishell);//if input is "./minishell", SHLVL should grow
 		if (parse_input(&minishell))
-			global_exit_code = execute(&minishell);
+			g_exit_code = executor(&minishell);
 		else
-			global_exit_code = 1;
+			g_exit_code = 1;
 		reset_shell(&minishell);
 	}
-	terminate_shell(&minishell, global_exit_code);
+	terminate_shell(&minishell, g_exit_code);
 	return (0);
 }

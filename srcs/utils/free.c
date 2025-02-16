@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:30:23 by amesmar           #+#    #+#             */
-/*   Updated: 2025/02/13 21:39:50 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/16 15:32:14 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	free_arr(char **arr)
 	}
 }
 
-void	free_shell(t_shell *minishell, bool free_all)
+void	free_shell(t_shell *minishell)
 {
 	if (minishell && minishell->input)
 	{
@@ -52,16 +52,13 @@ void	free_shell(t_shell *minishell, bool free_all)
 		free_token(&minishell->token_lst, &free_ptr);
 	if (minishell && minishell->cmd_lst)
 		free_cmd(&minishell->cmd_lst, &free_ptr);
-	if (free_all == true)
-	{
-		if (minishell && minishell->cur_dir)
-			free_ptr(minishell->cur_dir);
-		if (minishell && minishell->old_dir)
-			free_ptr(minishell->old_dir);
-		if (minishell && minishell->envp)
-			free_arr(minishell->envp);
-		rl_clear_history();
-	}
+	if (minishell && minishell->cur_dir)
+		free_ptr(minishell->cur_dir);
+	if (minishell && minishell->old_dir)
+		free_ptr(minishell->old_dir);
+	if (minishell && minishell->envp)
+		free_arr(minishell->envp);
+	rl_clear_history();
 }
 
 void	close_fds(t_cmd *cmds, bool close_backups)

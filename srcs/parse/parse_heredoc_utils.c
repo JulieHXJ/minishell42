@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 16:39:10 by xhuang            #+#    #+#             */
-/*   Updated: 2025/02/13 20:59:01 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/16 16:12:13 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static char	*expand_line(t_shell *data, char *line)
 	{
 		if (ft_strchr(words[i], '$'))
 		{
-			words[i] = var_expander_hd(data, words[i]);
+			words[i] = expander_hd(data, words[i]);
 			if (!words[i])
 				return (NULL);
 		}

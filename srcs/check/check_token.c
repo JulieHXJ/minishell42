@@ -6,13 +6,13 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 19:24:44 by amesmar           #+#    #+#             */
-/*   Updated: 2025/02/13 19:18:32 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/16 17:13:50 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static bool	sequence_check(t_token *token_node)
+static bool	check_seq_helper(t_token *token_node)
 {
 	if (token_node->prev)
 	{
@@ -26,14 +26,14 @@ static bool	sequence_check(t_token *token_node)
 	return (false);
 }
 
-int	check_token_list(t_token **token_lst)
+int	check_sequence(t_token **token_lst)
 {
 	t_token	*temp;
 
 	temp = *token_lst;
 	while (temp)
 	{
-		if (sequence_check(temp) == true)
+		if (check_seq_helper(temp) == true)
 		{
 			if (temp->type == END && temp->prev && temp->prev->type > PIPE)
 				ft_printf("syntax error: newline\n");

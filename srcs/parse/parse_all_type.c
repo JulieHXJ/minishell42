@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   handle_cmd.c                                       :+:      :+:    :+:   */
+/*   parse_all_type.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 16:34:22 by xhuang            #+#    #+#             */
-/*   Updated: 2025/02/13 20:14:46 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/16 17:19:01 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "minishell.h"
+#include "minishell.h"
 
 static void	no_arg(t_shell *data)
 {
@@ -42,7 +42,7 @@ void	parse_pipe(t_cmd **cmd, t_token **token_lst)
 	*token_lst = (*token_lst)->next;
 }
 
-void	handle_commands(t_shell *data, t_token *token)
+void	parse_all_type(t_shell *data, t_token *token)
 {
 	t_token	*temp;
 

@@ -1,65 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipe_io.c                                          :+:      :+:    :+:   */
+/*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:48:53 by amesmar           #+#    #+#             */
-/*   Updated: 2025/02/13 20:26:28 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/16 17:18:36 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-
-bool	restore_io(t_redir *io)
+bool	create_pipes(t_shell *data)
 {
-	int	ret;
+	int		*fd;
+	t_cmd	*tmp;
 
-	ret = true;
-	if (!io)
-		return (ret);
-	if (io->stdin_backup != -1)
+	tmp = data->cmd_lst;
+	while (tmp)
 	{
-		if (dup2(io->stdin_backup, STDIN_FILENO) == -1)
-			ret = false;
-		close(io->stdin_backup);
-		io->stdin_backup = -1;
-	}
-	if (io->stdout_backup != -1)
-	{
-		if (dup2(io->stdout_backup, STDOUT_FILENO) == -1)
-			ret = false;
-		close(io->stdout_backup);
-		io->stdout_backup = -1;
-	}
-	return (ret);
-}
-
-
-bool	check_infile_outfile(t_redir *io)
-{
-	if (!io || (!io->infile && !io->outfile))
-		return (true);
-	if ((io->infile && io->fd_in == -1)
-		|| (io->outfile && io->fd_out == -1))
-		return (false);
-	return (true);
-}
-
-
-void	close_pipe_fds(t_cmd *cmds, t_cmd *skip_cmd)
-{
-	while (cmds)
-	{
-		if (cmds != skip_cmd && cmds->pipe_fd)
+		if (tmp->if_pipe || (tmp->prev && tmp->prev->if_pipe))
 		{
-			close(cmds->pipe_fd[0]);
-			close(cmds->pipe_fd[1]);
+			fd = malloc(sizeof * fd * 2);
+			if (!fd || pipe(fd) != 0)
+			{
+				reset_shell(data);
+				return (false);
+			}
+			tmp->pipe_fd = fd;
 		}
-		cmds = cmds->next;
+		tmp = tmp->next;
 	}
+	return (true);
 }
 
 bool	re_pipe(t_redir *io)
@@ -84,7 +57,20 @@ bool	re_pipe(t_redir *io)
 	return (ret);
 }
 
- bool	set_pipe_fds(t_cmd *cmds, t_cmd *c)
+void	close_pipe_fds(t_cmd *cmds, t_cmd *skip_cmd)
+{
+	while (cmds)
+	{
+		if (cmds != skip_cmd && cmds->pipe_fd)
+		{
+			close(cmds->pipe_fd[0]);
+			close(cmds->pipe_fd[1]);
+		}
+		cmds = cmds->next;
+	}
+}
+
+bool	set_pipe_fds(t_cmd *cmds, t_cmd *c)
 {
 	if (!c)
 		return (false);

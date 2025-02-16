@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 18:50:52 by amesmar           #+#    #+#             */
-/*   Updated: 2025/02/13 20:12:17 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/16 17:11:10 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static bool	out_of_range(int neg, unsigned long long num, bool *error)
 {
-	if ((neg == 1 && num > LONG_MAX) || (neg == -1 && num >
-			-(unsigned long)LONG_MIN))
+	if ((neg == 1 && num > LONG_MAX)
+		|| (neg == -1 && num > -(unsigned long)LONG_MIN))
 		*error = true;
 	return (*error);
 }
@@ -53,7 +53,7 @@ static int	get_exit_code(char *arg, bool *error)
 	unsigned long long	i;
 
 	if (!arg)
-		return (global_exit_code);
+		return (g_exit_code);
 	i = 0;
 	while (ft_isspace(arg[i]))
 		i++;
@@ -96,7 +96,7 @@ int	exit_builtin(t_shell *data, char **args)
 	if (!quiet)
 		ft_putendl_fd("exit", 2);
 	if (!args || !args[1])
-		exit_code = global_exit_code;
+		exit_code = g_exit_code;
 	else
 	{
 		exit_code = get_exit_code(args[1], &error);

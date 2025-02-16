@@ -6,16 +6,16 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 16:18:07 by xhuang            #+#    #+#             */
-/*   Updated: 2025/02/13 20:58:20 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/16 17:16:27 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "minishell.h"
+#include "minishell.h"
 
 int	var_length(char *str)
 {
-	int		i;
-	int		count;
+	int	i;
+	int	count;
 
 	count = 0;
 	i = 0;

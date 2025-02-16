@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 16:12:26 by xhuang            #+#    #+#             */
-/*   Updated: 2025/02/13 20:19:36 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/16 15:47:54 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,13 @@ bool	open_heredoc(t_shell *data, t_redir *io)
 	return (ret);
 }
 
-void	parse_heredoc(t_shell *mini, t_cmd **last_node, t_token **token_lst)
+void	parse_heredoc(t_shell *mini, t_cmd **last_node, t_token **list)
 {
 	t_token	*temp;
 	t_cmd	*cmd;
 	t_redir	*io;
 
-	temp = *token_lst;
+	temp = *list;
 	cmd = last_cmd(*last_node);
 	init_io(cmd);
 	io = cmd->io;
@@ -77,5 +77,5 @@ void	parse_heredoc(t_shell *mini, t_cmd **last_node, t_token **token_lst)
 		temp = temp->next->next;
 	else
 		temp = temp->next;
-	*token_lst = temp;
+	*list = temp;
 }

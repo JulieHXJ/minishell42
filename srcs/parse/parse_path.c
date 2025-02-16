@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 18:44:09 by xhuang            #+#    #+#             */
-/*   Updated: 2025/02/13 20:52:09 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/16 17:19:18 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ static char	*find_path(char *cmd, char **paths)
 		cmd_path = ft_strjoin(paths[i], cmd);
 		if (!cmd_path)
 		{
-			// errmsg_cmd("malloc", NULL,
-			// 	"an unexpected error occured", EXIT_FAILURE);
+			errmsg_cmd("malloc", NULL, "an unexpected error occured",
+				EXIT_FAILURE);
 			return (NULL);
 		}
 		if (access(cmd_path, F_OK | X_OK) == 0)

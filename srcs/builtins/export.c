@@ -6,28 +6,11 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 14:26:06 by xhuang            #+#    #+#             */
-/*   Updated: 2025/02/15 20:34:28 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/16 17:11:28 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-bool	valid_envp(char *var)
-{
-	int	i;
-
-	i = 0;
-	if (ft_isalpha(var[i]) == 0 && var[i] != '_')
-		return (false);
-	i++;
-	while (var[i] && var[i] != '=')
-	{
-		if (ft_isalnum(var[i]) == 0 && var[i] != '_')
-			return (false);
-		i++;
-	}
-	return (true);
-}
 
 static char	**get_key_value(char *arg)
 {
@@ -42,18 +25,65 @@ static char	**get_key_value(char *arg)
 	return (tmp);
 }
 
+/**
+ * @brief sort variables in descending order
+ */
+static void	sort_var(char **envp)
+{
+	int		len;
+	int		i;
+	int		j;
+	char	*tmp;
+
+	i = 0;
+	len = count_env(envp);
+	while (i < len - 1)
+	{
+		j = 0;
+		while (j < len - 1 - i)
+		{
+			if (ft_strcmp(envp[j], envp[j + 1]) > 0)
+			{
+				tmp = envp[j];
+				envp[j] = envp[j + 1];
+				envp[j + 1] = tmp;
+			}
+			j++;
+		}
+		i++;
+	}
+}
+
+/**
+ * @brief print environment var joined with "declare -x "
+ */
+int	print_export(t_shell *data)
+{
+	int	i;
+
+	if (!data->envp)
+		return (1);
+	sort_var(data->envp);
+	i = 0;
+	while (data->envp[i])
+	{
+		printf("declare -x ");
+		print_value(data->envp[i]);
+		i++;
+	}
+	return (0);
+}
+
 int	export_builtin(t_shell *data, char **args)
 {
 	int		i;
 	char	**tmp;
 	int		ret;
-	// int		level;
-	// char	*shlvl_new;
 
 	ret = 0;
 	i = 1;
 	if (!args[i])
-		return (env_builtin(data, NULL));
+		return (print_export(data));
 	while (args[i])
 	{
 		if (!valid_envp(args[i]))

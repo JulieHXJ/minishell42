@@ -6,22 +6,11 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 16:45:24 by xhuang            #+#    #+#             */
-/*   Updated: 2025/02/15 14:26:43 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/16 17:23:30 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static void	cmd_init(t_cmd **cmd)
-{
-	(*cmd)->cmd = NULL;
-	(*cmd)->cmd_path = NULL;
-	(*cmd)->args_list = NULL;
-	(*cmd)->if_pipe = false;
-	(*cmd)->pipe_fd = 0;
-	(*cmd)->prev = NULL;
-	(*cmd)->next = NULL;
-}
 
 t_cmd	*new_cmd(bool value)
 {
@@ -32,7 +21,6 @@ t_cmd	*new_cmd(bool value)
 		return (NULL);
 	ft_memset(new_node, 0, sizeof(t_cmd));
 	new_node->if_pipe = value;
-	cmd_init(&new_node);
 	return (new_node);
 }
 

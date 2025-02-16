@@ -6,39 +6,13 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 18:16:11 by xhuang            #+#    #+#             */
-/*   Updated: 2025/02/15 15:41:59 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/16 17:52:59 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int			g_last_exit_code;
-
-int	execute_command(t_shell *data, t_cmd *cmd)
-{
-	int	ret;
-
-	if (!cmd || !cmd->cmd)
-		terminate_shell(data, errmsg_cmd("child", NULL,
-				"parsing error: no command to execute!", EXIT_FAILURE));
-	if (!check_infile_outfile(cmd->io))
-		terminate_shell(data, EXIT_FAILURE);
-	set_pipe_fds(data->cmd_lst, cmd);
-	re_pipe(cmd->io);
-	close_fds(data->cmd_lst, false);
-	if (ft_strchr(cmd->cmd, '/') == NULL)
-	{
-		ret = execute_builtin(data, cmd);
-		if (ret != 127)
-			terminate_shell(data, ret);
-		ret = execute_sys_bin(data, cmd);
-		if (ret != 127)
-			terminate_shell(data, ret);
-	}
-	ret = execute_local_bin(data, cmd);
-	terminate_shell(data, ret);
-	return (ret);
-}
+// int			g_last_exit_code;
 
 static int	get_children(t_shell *data)
 {
@@ -97,7 +71,29 @@ static int	prep_for_exec(t_shell *data)
 	return (127);
 }
 
-int	execute(t_shell *data)
+int	execute_builtin(t_shell *data, t_cmd *cmd)
+{
+	int	ret;
+
+	ret = 127;
+	if (ft_strncmp(cmd->cmd, "cd", 3) == 0)
+		ret = cd_builtin(data, cmd->args_list);
+	else if (ft_strncmp(cmd->cmd, "echo", 5) == 0)
+		ret = echo_builtin(data, cmd->args_list);
+	else if (ft_strncmp(cmd->cmd, "env", 4) == 0)
+		ret = env_builtin(data, cmd->args_list);
+	else if (ft_strncmp(cmd->cmd, "export", 7) == 0)
+		ret = export_builtin(data, cmd->args_list);
+	else if (ft_strncmp(cmd->cmd, "pwd", 4) == 0)
+		ret = pwd_builtin(data, cmd->args_list);
+	else if (ft_strncmp(cmd->cmd, "unset", 6) == 0)
+		ret = unset_builtin(data, cmd->args_list);
+	else if (ft_strncmp(cmd->cmd, "exit", 5) == 0)
+		ret = exit_builtin(data, cmd->args_list);
+	return (ret);
+}
+
+int	executor(t_shell *data)
 {
 	int		ret;
 	t_cmd	*cmd;

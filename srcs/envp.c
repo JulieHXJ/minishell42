@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:29:17 by amesmar           #+#    #+#             */
-/*   Updated: 2025/02/13 20:58:13 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/16 17:59:03 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	count_env(char **env)
 	return (i);
 }
 
-int get_envp_index(char **env, char *var)
+int	get_envp_index(char **env, char *var)
 {
 	int		i;
 	char	*tmp;

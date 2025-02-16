@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 16:28:55 by xhuang            #+#    #+#             */
-/*   Updated: 2025/02/13 20:50:43 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/16 17:20:37 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ char	*retrieve_var(t_token *token, char *str, t_shell *data)
 		value = search_var_envp(data, var);
 	}
 	else if (var && var[0] == '?' && var[1] == '=')
-		value = ft_itoa(global_exit_code);
+		value = ft_itoa(g_exit_code);
 	else
 		value = NULL;
 	free(var);

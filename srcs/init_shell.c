@@ -6,14 +6,14 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:18:36 by amesmar           #+#    #+#             */
-/*   Updated: 2025/02/15 20:35:13 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/16 17:20:57 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // !!!!if no envp(env -i ./minishell), PWD and SHLVL should be default
-void	set_default_envp(t_shell *mini)
+static void	set_default_envp(t_shell *mini)
 {
 	char	buffer[PATH_MAX];
 	char	*dir;
@@ -137,6 +137,6 @@ bool	init_shell(t_shell *mini, char **envp)
 	mini->token_lst = NULL;
 	mini->cmd_lst = NULL;
 	mini->pid = -1;
-	global_exit_code = 0;
+	g_exit_code = 0;
 	return (true);
 }
