@@ -6,13 +6,13 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:18:36 by amesmar           #+#    #+#             */
-/*   Updated: 2025/02/16 17:20:57 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/16 18:08:17 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// !!!!if no envp(env -i ./minishell), PWD and SHLVL should be default
+// !!!!if no envp passed(env -i ./minishell), PWD and SHLVL should be default
 static void	set_default_envp(t_shell *mini)
 {
 	char	buffer[PATH_MAX];
@@ -40,8 +40,8 @@ static void	set_default_envp(t_shell *mini)
 	mini->envp[2] = NULL;
 }
 
-// !!!!!!if SHLVL exsit, it should start from value + 1 and no greater than 999
-// !!!!!!if SHLVL not exsit, add to envp from one
+// !!!!!!if SHLVL not exsit, add to envp from 1
+// if SHLVL exsit, it should start from given value + 1 and no greater than 999
 void	handle_shlvl(t_shell *mini)
 {
 	char	*shlvl_value;

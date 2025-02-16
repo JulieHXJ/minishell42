@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:25:25 by amesmar           #+#    #+#             */
-/*   Updated: 2025/02/13 20:48:39 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/16 18:01:45 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,3 @@ void	errmsg(char *errmsg, char *detail, int quotes)
 	ft_putendl_fd(msg, STDERR_FILENO);
 	free(msg);
 }
-
-// bool	usage_message(bool return_val)
-// {
-// 	ft_putendl_fd("Usage: ./minishell", 2);
-// 	ft_putendl_fd("Usage: ./minishell -c \"input line\"", 2);
-// 	return (return_val);
-// }

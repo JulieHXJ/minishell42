@@ -6,24 +6,11 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 14:58:12 by xhuang            #+#    #+#             */
-/*   Updated: 2025/02/13 20:23:04 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/16 18:04:35 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// static char	*get_relative_path(char *file_to_open)
-// {
-// 	char	*path;
-// 	char	*ret;
-
-// 	if (file_to_open[0] == '/')
-// 		return (ft_strdup(file_to_open));
-// 	path = ft_strdup("./");
-// 	ret = ft_strjoin(path, file_to_open);
-// 	printf("PARSING - Get_rel_path function return (: %s\n", ret);
-// 	return (ret);
-// }
 
 static void	open_outfile(t_redir *io, char *file, char *var_filename)
 {
