@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 18:50:52 by amesmar           #+#    #+#             */
-/*   Updated: 2025/02/16 17:11:10 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/19 17:15:34 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static bool	out_of_range(int neg, unsigned long long num, bool *error)
 {
-	if ((neg == 1 && num > LONG_MAX)
-		|| (neg == -1 && num > -(unsigned long)LONG_MIN))
+	if ((neg == 1 && num > LONG_MAX) || (neg == -1 && num
+			> -(unsigned long)LONG_MIN))
 		*error = true;
 	return (*error);
 }
@@ -58,22 +58,22 @@ static int	get_exit_code(char *arg, bool *error)
 	while (ft_isspace(arg[i]))
 		i++;
 	if (arg[i] == '\0')
-		*error = true;
+		return (*error = true, 0);
 	if (arg[i] == '-' || arg[i] == '+')
 		i++;
 	if (!ft_isdigit(arg[i]))
-		*error = true;
+		return (*error = true, 0);
 	while (arg[i])
 	{
 		if (!ft_isdigit(arg[i]) && !ft_isspace(arg[i]))
-			*error = true;
+			return (*error = true, 0);
 		i++;
 	}
 	i = ft_atoi_long(arg, error);
-	return (i % 256);
+	return ((int)(i % 256));
 }
 
-static bool	no_pipe(t_shell *data)
+static bool	check_prev_next(t_shell *data)
 {
 	t_cmd	*cmd;
 
@@ -89,11 +89,11 @@ int	exit_builtin(t_shell *data, char **args)
 {
 	int		exit_code;
 	bool	error;
-	bool	quiet;
+	bool	exist;
 
-	quiet = no_pipe(data);
+	exist = check_prev_next(data);
 	error = false;
-	if (!quiet)
+	if (!exist)
 		ft_putendl_fd("exit", 2);
 	if (!args || !args[1])
 		exit_code = g_exit_code;
@@ -102,14 +102,14 @@ int	exit_builtin(t_shell *data, char **args)
 		exit_code = get_exit_code(args[1], &error);
 		if (error)
 		{
-			ft_printf("Argument is not numeric");
-			exit_code = 2;
+			ft_putendl_fd("numeric argument required", 2);
+			return (terminate_shell(data, 255), 255);
 		}
 		else if (args[2])
 		{
-			ft_printf("Too many arguments");
-			return (exit_code = 1, exit_code);
+			ft_putendl_fd("too many arguments", 2);
+			return (1);
 		}
 	}
-	return (terminate_shell(data, exit_code), 2);
+	return (terminate_shell(data, exit_code), exit_code);
 }

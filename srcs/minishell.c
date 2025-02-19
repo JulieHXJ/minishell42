@@ -6,13 +6,11 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 16:53:00 by xhuang            #+#    #+#             */
-/*   Updated: 2025/02/16 17:59:50 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/19 17:16:10 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int			g_exit_code = 0;
 
 static bool	only_space(char *input)
 {
@@ -28,13 +26,12 @@ static bool	only_space(char *input)
 	return (true);
 }
 
-//!!!!!!!handled empty input
 static bool	parse_input(t_shell *data)
 {
 	if (data->input == NULL)
-		exit_builtin(data, NULL);//ctrl+D
+		exit_builtin(data, NULL);
 	else if (!*data->input)
-		return (true);//empty input(just enter)
+		return (true);
 	add_history(data->input);
 	if (only_space(data->input))
 		return (true);
@@ -91,7 +88,7 @@ int	main(int argc, char **argv, char **envp)
 		if (!minishell.input)
 			break ;
 		if (ft_strcmp(minishell.input, "./minishell") == 0)
-			handle_shlvl(&minishell);//if input is "./minishell", SHLVL should grow
+			handle_shlvl(&minishell);
 		if (parse_input(&minishell))
 			g_exit_code = executor(&minishell);
 		else

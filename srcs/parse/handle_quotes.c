@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:32:39 by xhuang            #+#    #+#             */
-/*   Updated: 2025/02/13 20:00:01 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/19 15:15:00 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ static bool	quotes_found(char *str)
 	return (false);
 }
 
+// didn't handle escape charactor "\"
 int	handle_quotes(t_shell *data)
 {
 	t_token	*temp;

@@ -6,11 +6,13 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 18:16:11 by xhuang            #+#    #+#             */
-/*   Updated: 2025/02/16 18:02:04 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/19 16:35:38 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int			g_exit_code;
 
 static int	get_children(t_shell *data)
 {

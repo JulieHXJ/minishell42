@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 16:20:53 by xhuang            #+#    #+#             */
-/*   Updated: 2025/02/13 20:57:44 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/19 15:46:30 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	unset_builtin(t_shell *mini, char **args)
 	ret = 0;
 	i = 1;
 	if (!args[i])
-		return (errmsg_cmd("unset", NULL, "not enough arguments", false), 1);
+		return (0);
 	while (args[i])
 	{
 		if (!valid_envp(args[i]) || ft_strchr(args[i], '=') != NULL)

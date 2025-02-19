@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 16:53:04 by xhuang            #+#    #+#             */
-/*   Updated: 2025/02/16 17:22:14 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/19 17:14:25 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,14 +121,12 @@ t_token				*insert_token(t_token **head, t_token *to_del,
 						t_token *insert);
 int					set_quote_status(int status, char *str, int i);
 int					word_or_sep(int *i, char *str, int start, t_shell *data);
-int	tokenizor(t_shell *data, char *str);
-// int					check_token_list(t_token **token_lst);
-int check_sequence(t_token **token_lst);
+int					tokenizor(t_shell *data, char *str);
+int					check_sequence(t_token **token_lst);
 
 // expander
 bool				var_valid(char c);
-// int					check_if_var(t_token **token_lst);
-int	check_variable(t_token **token_lst);
+int					check_variable(t_token **token_lst);
 int					var_length(char *str);
 void				copy_var(char *str, char *value, int *j);
 char				*replace_token(char *oldstr, char *value, int newstr_size,
@@ -158,7 +156,7 @@ void				parse_str(t_cmd **cmd, t_token **token_lst,
 void				parse_redir_in(t_cmd **last_cmd, t_token **token_lst);
 void				parse_redir_out(t_cmd **last_cmd, t_token **token_lst);
 void				parse_append(t_cmd **last_node, t_token **token_lst);
-void	parse_all_type(t_shell *data, t_token *token);
+void				parse_all_type(t_shell *data, t_token *token);
 
 // ------------------------------executing------------------------------------
 // builtins
@@ -190,7 +188,7 @@ bool				fill_heredoc(t_shell *data, t_redir *io, int fd);
 
 char				**realloc_env_vars(t_shell *data, int size);
 int					execute_command(t_shell *data, t_cmd *cmd);
-int	executor(t_shell *data);
+int					executor(t_shell *data);
 
 // ------------------------------error & free---------------------------------
 int					errmsg_cmd(char *command, char *detail, char *error_message,

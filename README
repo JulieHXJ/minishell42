@@ -1,9 +1,0 @@
-Breakdown:
-1. Lexical Analysis/Tokenization
-Purpose: Break down the input string into smaller components called tokens.
-
-2. Parser
-
-3. Expander
-
-4. Executor
