@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 14:45:44 by xhuang            #+#    #+#             */
-/*   Updated: 2025/02/13 20:52:36 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/19 20:16:21 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 bool	remove_old_fd(t_redir *io, bool infile)
 {
-	if (infile == true && io->infile)
+	if (infile && io->infile)
 	{
 		if (io->fd_in == -1 || (io->outfile && io->fd_out == -1))
 			return (false);

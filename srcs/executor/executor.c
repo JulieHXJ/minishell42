@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 18:16:11 by xhuang            #+#    #+#             */
-/*   Updated: 2025/02/19 16:35:38 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/19 20:16:00 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,9 +96,7 @@ int	execute_builtin(t_shell *data, t_cmd *cmd)
 int	executor(t_shell *data)
 {
 	int		ret;
-	t_cmd	*cmd;
 
-	cmd = data->cmd_lst;
 	ret = prep_for_exec(data);
 	if (ret != 127)
 		return (ret);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amesmar <amesmar@student.42.fr>            +#+  +:+       +#+        */
+/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 16:53:00 by xhuang            #+#    #+#             */
-/*   Updated: 2025/02/19 18:16:14 by amesmar          ###   ########.fr       */
+/*   Updated: 2025/02/19 20:15:24 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,13 +70,6 @@ void	terminate_shell(t_shell *minishell, int exit_code)
 	exit(exit_code);
 }
 
-void check_leaks(void)
-{
-    char command[64];
-    sprintf(command, "leaks %d", getpid());
-    system(command);
-}
-
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell	minishell;
@@ -103,6 +96,5 @@ int	main(int argc, char **argv, char **envp)
 		reset_shell(&minishell);
 	}
 	terminate_shell(&minishell, g_exit_code);
-	check_leaks();
 	return (0);
 }

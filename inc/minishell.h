@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 16:53:04 by xhuang            #+#    #+#             */
-/*   Updated: 2025/02/19 17:14:25 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/19 19:52:59 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <signal.h>
 # include <stdbool.h>
 # include <sys/stat.h>
+# include <sys/wait.h>
 
 // macros
 # define PROMPT "\033[32mMinishell>$ \033[0m"
