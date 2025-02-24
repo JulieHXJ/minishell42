@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 14:58:12 by xhuang            #+#    #+#             */
-/*   Updated: 2025/02/16 18:04:35 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/24 23:52:33 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@ static void	open_outfile(t_redir *io, char *file, char *var_filename)
 		return ;
 	}
 	io->fd_out = open(io->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0664);
-	if (io->fd_out == -1)
-		errmsg_cmd(io->outfile, NULL, strerror(errno), false);
 }
 
 void	parse_redir_out(t_cmd **last_node, t_token **token_lst)

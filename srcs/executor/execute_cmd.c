@@ -3,15 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amesmar <amesmar@student.42.fr>            +#+  +:+       +#+        */
+/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 18:29:32 by xhuang            #+#    #+#             */
-/*   Updated: 2025/02/19 17:57:22 by amesmar          ###   ########.fr       */
+/*   Updated: 2025/02/24 23:50:34 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/**
+ * Checks a given command path
+ * Returns true if it is a directory, false otherwise.
+ */
 static bool	cmd_is_dir(char *cmd)
 {
 	struct stat	cmd_stat;
@@ -21,22 +25,37 @@ static bool	cmd_is_dir(char *cmd)
 	return (S_ISDIR(cmd_stat.st_mode));
 }
 
+/**
+ * execute a command with an absolute or relative path
+ */
 static int	execute_local_bin(t_shell *data, t_cmd *cmd)
 {
 	if (ft_strchr(cmd->cmd, '/') == NULL && get_envp_index(data->envp,
 			"PATH") != -1)
 		return (127);
 	if (access(cmd->cmd, F_OK) != 0)
+	{
+		errmsg_cmd(cmd->cmd, NULL, "No such file or directory", 127);
 		return (127);
+	}
 	if (cmd_is_dir(cmd->cmd))
+	{
+		errmsg_cmd(cmd->cmd, NULL, "is a directory", 126);
 		return (126);
+	}
 	if (access(cmd->cmd, F_OK | X_OK) != 0)
+	{
+		errmsg_cmd(cmd->cmd, NULL, "Permission denied", 126);
 		return (126);
+	}
 	if (execve(cmd->cmd, cmd->args_list, data->envp) == -1)
 		return (errno);
 	return (EXIT_FAILURE);
 }
 
+/**
+ * execute system binaries
+ */
 static int	execute_sys_bin(t_shell *data, t_cmd *cmd)
 {
 	if (!cmd->cmd || cmd->cmd[0] == '\0')
@@ -45,9 +64,12 @@ static int	execute_sys_bin(t_shell *data, t_cmd *cmd)
 		return (127);
 	cmd->cmd_path = get_cmd_path(data, cmd->cmd);
 	if (!cmd->cmd_path)
+	{
+		errmsg_cmd(cmd->cmd, NULL, "command not found", 127);
 		return (127);
+	}
 	if (execve(cmd->cmd_path, cmd->args_list, data->envp) == -1)
-		ft_printf("Print error");
+		return (errno);
 	return (EXIT_FAILURE);
 }
 
@@ -80,7 +102,7 @@ int	execute_command(t_shell *data, t_cmd *cmd)
 {
 	int	ret;
 
-	if (cmd && cmd->io && !check_infile_outfile(cmd->io))
+	if (cmd && cmd->io && !check_infile_outfile(cmd->io, true))
 		terminate_shell(data, EXIT_FAILURE);
 	if_cmd_empty(data, cmd);
 	set_pipe_fds(data->cmd_lst, cmd);

@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 16:53:04 by xhuang            #+#    #+#             */
-/*   Updated: 2025/02/19 19:52:59 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/24 23:50:16 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,7 +175,7 @@ void				init_io(t_cmd *cmd);
 bool				re_pipe(t_redir *io);
 void				close_pipe_fds(t_cmd *cmds, t_cmd *skip_cmd);
 void				free_io(t_redir *io);
-bool				check_infile_outfile(t_redir *io);
+bool				check_infile_outfile(t_redir *io, bool print);
 bool				restore_io(t_redir *io);
 bool				set_pipe_fds(t_cmd *cmds, t_cmd *c);
 bool				create_pipes(t_shell *data);

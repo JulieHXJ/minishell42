@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   in_out.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amesmar <amesmar@student.42.fr>            +#+  +:+       +#+        */
+/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 18:39:34 by xhuang            #+#    #+#             */
-/*   Updated: 2025/02/19 18:09:39 by amesmar          ###   ########.fr       */
+/*   Updated: 2025/02/24 23:51:28 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,22 @@ void	init_io(t_cmd *cmd)
 	}
 }
 
-bool	check_infile_outfile(t_redir *io)
+bool	check_infile_outfile(t_redir *io, bool print)
 {
 	if (!io || (!io->infile && !io->outfile))
 		return (true);
-	if ((io->infile && io->fd_in == -1)
-		|| (io->outfile && io->fd_out == -1))
+	if (io->infile && io->fd_in == -1)
+	{
+		if (print)
+			errmsg_cmd(io->infile, NULL, "No such file or directory", 1);
 		return (false);
+	}
+	else if (io->outfile && io->fd_out == -1)
+	{
+		if (print)
+			errmsg_cmd(io->outfile, NULL, "No such file or directory", 1);
+		return (false);
+	}
 	return (true);
 }
 

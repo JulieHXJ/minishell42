@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 18:16:11 by xhuang            #+#    #+#             */
-/*   Updated: 2025/02/19 20:16:00 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/24 23:50:44 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static int	prep_for_exec(t_shell *data)
 		return (EXIT_SUCCESS);
 	if (!data->cmd_lst->cmd)
 	{
-		if (data->cmd_lst->io && !check_infile_outfile(data->cmd_lst->io))
+		if (data->cmd_lst->io && !check_infile_outfile(data->cmd_lst->io, true))
 			return (EXIT_FAILURE);
 		return (EXIT_SUCCESS);
 	}
@@ -101,7 +101,7 @@ int	executor(t_shell *data)
 	if (ret != 127)
 		return (ret);
 	if (!data->cmd_lst->if_pipe && !data->cmd_lst->prev
-		&& check_infile_outfile(data->cmd_lst->io))
+		&& check_infile_outfile(data->cmd_lst->io, false))
 	{
 		re_pipe(data->cmd_lst->io);
 		ret = execute_builtin(data, data->cmd_lst);
