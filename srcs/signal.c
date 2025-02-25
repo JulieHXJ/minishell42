@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amesmar <amesmar@student.42.fr>            +#+  +:+       +#+        */
+/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 18:04:07 by amesmar           #+#    #+#             */
-/*   Updated: 2025/02/25 12:08:13 by amesmar          ###   ########.fr       */
+/*   Updated: 2025/02/25 13:04:21 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ static void	sigquit_ignore(void)
 static void	signal_print_newline(int signal)
 {
 	(void)signal;
+	write(1, "\n", 1);
 	rl_on_new_line();
 }
 
