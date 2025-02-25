@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amesmar <amesmar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 14:26:06 by xhuang            #+#    #+#             */
-/*   Updated: 2025/02/16 17:11:28 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/25 12:05:50 by amesmar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,6 @@ static char	**get_key_value(char *arg)
 	return (tmp);
 }
 
-/**
- * @brief sort variables in descending order
- */
 static void	sort_var(char **envp)
 {
 	int		len;
@@ -54,9 +51,6 @@ static void	sort_var(char **envp)
 	}
 }
 
-/**
- * @brief print environment var joined with "declare -x "
- */
 int	print_export(t_shell *data)
 {
 	int	i;

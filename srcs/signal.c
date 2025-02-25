@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amesmar <amesmar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 18:04:07 by amesmar           #+#    #+#             */
-/*   Updated: 2025/02/13 17:22:40 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/25 12:08:13 by amesmar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,6 @@ static void	reset_prompt(int signo)
 	rl_redisplay();
 }
 
-/**
- * @brief Ignores SIGQUIT (Ctrl-), let SIGINT (Ctrl-C) to reset the prompt
- */
 void	preset_signals(void)
 {
 	struct sigaction	act;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_shell.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amesmar <amesmar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:18:36 by amesmar           #+#    #+#             */
-/*   Updated: 2025/02/16 18:08:17 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/25 12:07:59 by amesmar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,10 +97,6 @@ static void	init_envp(t_shell *mini, char **envp)
 	handle_shlvl(mini);
 }
 
-/**
- * @brief retrieve the current working dir to cur_dir for cmd like pwd and cd,
- * and save the previous dir to old_dir
- */
 static void	init_dir(t_shell *mini)
 {
 	char	buffer[PATH_MAX];

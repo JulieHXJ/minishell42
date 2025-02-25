@@ -3,19 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amesmar <amesmar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 18:29:32 by xhuang            #+#    #+#             */
-/*   Updated: 2025/02/24 23:50:34 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/02/25 12:06:26 by amesmar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/**
- * Checks a given command path
- * Returns true if it is a directory, false otherwise.
- */
 static bool	cmd_is_dir(char *cmd)
 {
 	struct stat	cmd_stat;
@@ -25,9 +21,6 @@ static bool	cmd_is_dir(char *cmd)
 	return (S_ISDIR(cmd_stat.st_mode));
 }
 
-/**
- * execute a command with an absolute or relative path
- */
 static int	execute_local_bin(t_shell *data, t_cmd *cmd)
 {
 	if (ft_strchr(cmd->cmd, '/') == NULL && get_envp_index(data->envp,
@@ -53,9 +46,6 @@ static int	execute_local_bin(t_shell *data, t_cmd *cmd)
 	return (EXIT_FAILURE);
 }
 
-/**
- * execute system binaries
- */
 static int	execute_sys_bin(t_shell *data, t_cmd *cmd)
 {
 	if (!cmd->cmd || cmd->cmd[0] == '\0')
